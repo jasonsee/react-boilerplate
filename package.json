@@ -1,10 +1,10 @@
 {
-  "name": "WTA-StarterKit",
+  "name": "WAT-React-Boilerplate",
   "version": "0.0.1",
   "private": true,
   "repository": {
     "type": "git",
-    "url": "https://github.com/"
+    "url": "https://github.com/willowtreeapps/react-boilerplate"
   },
   "dependencies": {
     "compwnents": "~0.0.2",
@@ -29,7 +29,6 @@
     "envify": "~2.0.1",
     "multistream": "~1.4.2",
     "jshint-stylish": "~1.0.0",
-    "jsxhint": "~0.5.0",
     "browserify": "~6.2.0",
     "watchify": "~2.1.0",
     "webpack": "~1.4.13",

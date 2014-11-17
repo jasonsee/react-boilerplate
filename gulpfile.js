@@ -13,7 +13,6 @@ var gulp = require('gulp'),
     watchify = require('watchify'),
     reactify = require('reactify'),
     envify = require('envify'),
-    jsxhint = require('jsxhint'),
     source = require('vinyl-source-stream'),
     runSequence = require('run-sequence'),
     stylish = require('jshint-stylish');
