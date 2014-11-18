@@ -9,6 +9,7 @@
   "dependencies": {
     "compwnents": "~0.0.2",
     "flux": "~2.0.1",
+    "object-assign": "~1.0.0",
     "react": "~0.12.0",
     "react-router": "~0.10.2"
   },

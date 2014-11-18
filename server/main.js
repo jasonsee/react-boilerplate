@@ -2,7 +2,7 @@ var express = require('express');
 var app = express();
 var path = require('path');
 var port = process.env.PORT || 5000;
-var env = process.env.NODE_ENV || 'development'
+var env = process.env.NODE_ENV || 'development';
 var staticPath = env === 'production' ? './app/dist' : './app/public';
 var fs = require('fs');
 

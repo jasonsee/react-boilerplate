@@ -48,6 +48,8 @@ function lint() {
         es3: true,
         globals: {
             jest: true,
+            it: true,
+            expect: true, 
             describe: true,
             require: true,
             module: true,
@@ -174,6 +176,8 @@ gulp.task('clean', function() {
 });
 
 gulp.task('test', function() {
+    // Jest does not respect NODE_PATH yet...
+    // https://github.com/facebook/jest/issues/102
     return gulp.src('app/src/js/')
     .pipe(jest({
         unmockedModulePathPatterns: [
