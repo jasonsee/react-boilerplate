@@ -4,21 +4,13 @@ var path = require('path');
 var port = process.env.PORT || 5000;
 var env = process.env.NODE_ENV || 'development'
 var staticPath = env === 'production' ? './app/dist' : './app/public';
-
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+var fs = require('fs');
 
 app.use('/', express['static'](staticPath));
 
 app.get("/", function(req, res) {
-   res.render('index', function(err, html) {
-       if (err) {
-           res.send(500);
-       }
-
-       res.set('Content-Type', 'text/html');
-       res.send(200, new Buffer(html));
-   });
+    res.writeHeader(200, {"Content-Type": 'text/html'}); 
+    fs.createReadStream(__dirname + '/views/index.html').pipe(res);
 });
 
 app.listen(port, function() {

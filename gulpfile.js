@@ -8,6 +8,7 @@ var gulp = require('gulp'),
     minify = require('gulp-minify-css'),
     jest = require('gulp-jest'),
     react = require('gulp-react'),
+    webpack = require('gulp-webpack'),
     del = require('del'),
     browserify = require('browserify'),
     watchify = require('watchify'),
@@ -200,6 +201,16 @@ gulp.task('release', ['clean'], function(callback) {
 });
 
 gulp.task('build', ['bundle-watch', 'css']);
+gulp.task('build-webpack', ['bundle-nowatch', 'css']);
+
+gulp.task('webpack', ['build-webpack', 'watch'], function() {
+    return gulp.src('./app/src/app.js')
+        .pipe(webpack({
+        // TODO Set options  
+        }, null, function(err, stats) {
+            console.log(err, stats); 
+        })).pipe(gulp.dest('app/public/'));
+});
 
 gulp.task('default', ['build'], function(callback) {
     runSequence('watch', 'nodemon', 'lint-app', callback);
