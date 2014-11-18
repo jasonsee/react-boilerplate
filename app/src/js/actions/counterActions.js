@@ -11,6 +11,12 @@ var CounterActions = {
             quantity: 1
         });
     }
-}
+};
 
 module.exports = CounterActions;
+
+//     "actions": "npm link ./app/src/js/actions",
+//     "constants": "npm link ./app/src/js/constants",
+//     "dispatcher": "npm link ./app/src/js/dispatcher",
+//     "stores": "npm link ./app/src/js/stores",
+

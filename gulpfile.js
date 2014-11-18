@@ -1,7 +1,7 @@
 var gulp = require('gulp'),
     gutil = require('gulp-util'),
     notify = require('gulp-notify'),
-    sass = require('gulp-ruby-sass'),
+    sass = require('gulp-sass'),
     nodemon = require('gulp-nodemon'),
     jshint = require('gulp-jshint'),
     uglify = require('gulp-uglify'),
@@ -27,6 +27,7 @@ var paths = {
 
 // https://gist.github.com/Sigmus/9253068
 function handleErrors() {
+    console.log(arguments);
     var args = Array.prototype.slice.call(arguments);
     notify.onError({
         title: 'Error',
@@ -69,8 +70,7 @@ function bundleJS(watch) {
         packageCache: {},
         fullPaths: true,
         paths: [
-            './node_modules',
-            './app/src/js'
+            './node_modules'
         ]
     });
 
@@ -103,14 +103,9 @@ gulp.task('bundle-nowatch', function() {
 });
 
 gulp.task('css', function() {
-    return gulp.src('./app/src/styles/main.scss')
-    .pipe(sass({
-        sourcemap: true, 
-        sourcemapPath: '../../src/styles/',
-        compass: true,
-        require: [],
-        bundleExec: true 
-    })).on('error', handleErrors).pipe(gulp.dest('app/public/css'));
+    gulp.src('./app/src/styles/main.scss')
+        .pipe(sass())
+        .pipe(gulp.dest('app/public/css'));
 });
 
 gulp.task('copy-assets', function() {
@@ -176,8 +171,6 @@ gulp.task('clean', function() {
 });
 
 gulp.task('test', function() {
-    // Jest does not respect NODE_PATH yet...
-    // https://github.com/facebook/jest/issues/102
     return gulp.src('app/src/js/')
     .pipe(jest({
         unmockedModulePathPatterns: [
