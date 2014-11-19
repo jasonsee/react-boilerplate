@@ -1,4 +1,5 @@
-var gulp = require('gulp'),
+var fs = require('fs'),
+    gulp = require('gulp'),
     gutil = require('gulp-util'),
     notify = require('gulp-notify'),
     sass = require('gulp-sass'),
@@ -18,6 +19,7 @@ var gulp = require('gulp'),
     runSequence = require('run-sequence'),
     stylish = require('jshint-stylish');
 
+var env = process.env.NODE_ENV;
 var paths = {
     styles: ['app/src/styles/**/*.scss'],
     scripts: ['app/src/js/**/*.js'],
@@ -25,9 +27,18 @@ var paths = {
     sprites: ['app/src/styles/sprites/**/*']
 };
 
+var dependencies = Object.keys(require('./package.json').dependencies);
+var appModules = [
+    'actions',
+    'constants',
+    'dispatcher',
+    'local-components',
+    'stores',
+    'utils'
+]; 
+
 // https://gist.github.com/Sigmus/9253068
 function handleErrors() {
-    console.log(arguments);
     var args = Array.prototype.slice.call(arguments);
     notify.onError({
         title: 'Error',
@@ -36,46 +47,18 @@ function handleErrors() {
     this.emit('end');
 }
 
-function lint() {
-    gulp.src([
-        'app/src/js/**/*.js'
-    ])
-    .pipe(react()
-    .on('error', handleErrors))
-    .pipe(jshint({
-        browser: true,
-        devel: false,
-        globalstrict: true,
-        es3: true,
-        globals: {
-            jest: true,
-            it: true,
-            expect: true, 
-            describe: true,
-            require: true,
-            module: true,
-            Promise: true,
-            React: true
-        } 
-    }))
-    .pipe(jshint.reporter(stylish));
-}
-
-function bundleJS(watch) {
+function bundleApp(watch) {
     var bundler = browserify({
-        entries: './app/src/js/app.js',
-        debug: true,
+        debug: env !== 'production',
+        fullPaths: env !== 'production',
         transform: [reactify, envify],
-        cache: {},
-        packageCache: {},
-        fullPaths: true,
-        paths: [
-            './node_modules'
-        ]
-    });
-
-    bundler = watch ? watchify(bundler) : bundler; 
-     
+        cache: {}, 
+        packageCache: {}
+    })
+    .external(dependencies)
+    .require(appModules)
+    .add('./app/src/js/app.js');
+    
     function rebundle() {
         var stream = bundler.bundle();
         return stream.on('error', handleErrors)
@@ -83,8 +66,9 @@ function bundleJS(watch) {
         .pipe(gulp.dest('./app/public/js/'));
     }
 
+    bundler = watch ? watchify(bundler) : bundler; 
+
     bundler.on('update', function() {
-        lint();
         var startTime = Date.now();
         gutil.log('Rebundling...');
         rebundle();
@@ -94,12 +78,23 @@ function bundleJS(watch) {
     return rebundle();
 }
 
-gulp.task('bundle-watch', function() {
-    return bundleJS(true); 
+gulp.task('bundle-vendor', function() {
+    var bundle = browserify({
+        debug: false,
+        fullPaths: false
+    }).require(dependencies).bundle();
+
+    return bundle.on('error', handleErrors)
+    .pipe(source('vendor.js'))
+    .pipe(gulp.dest('app/public/js/'));
 });
 
-gulp.task('bundle-nowatch', function() {
-    return bundleJS(false);
+gulp.task('watchify', function() {
+    return bundleApp(true); 
+});
+
+gulp.task('bundle-app', function() {
+    return bundleApp(false);
 });
 
 gulp.task('css', function() {
@@ -122,27 +117,31 @@ gulp.task('nodemon', function() {
     return nodemon({
         script: 'server/main.js',
         ext: 'js html',
-        ignore: ['app/**/*.js']
-    }).on('change', ['lint-server']);
+        ignore: __dirname + '/app/**/*.js',
+    });
 });
 
-gulp.task('lint-app', function() {
-    return lint();
-});
-
-gulp.task('lint-server', function() {
-    return gulp.src([
-        'server/**/*.js', 
-        'gulpfile.js'
+gulp.task('jshint', function() {
+    gulp.src([
+        'app/src/js/**/*.js'
     ])
+    .pipe(react()
+    .on('error', handleErrors))
     .pipe(jshint({
-        expr: true,
-        node: true,
-        sub: true,
+        browser: true,
+        devel: false,
+        globalstrict: true,
         es3: true,
         globals: {
-            Promise: true
-        }
+            jest: true,
+            it: true,
+            expect: true, 
+            describe: true,
+            require: true,
+            module: true,
+            Promise: true,
+            React: true
+        } 
     }))
     .pipe(jshint.reporter(stylish));
 });
@@ -182,7 +181,7 @@ gulp.task('test', function() {
 });
 
 gulp.task('watch', function() {
-    // gulp.watch(paths.scripts, ['test']);
+    gulp.watch(paths.scripts, ['jshint']);
     gulp.watch(paths.styles, ['css']);
     gulp.watch(paths.assets, ['copy-assets']);
     gulp.watch(paths.sprites, ['copy-sprites']);
@@ -190,25 +189,21 @@ gulp.task('watch', function() {
 
 gulp.task('release', ['clean'], function(callback) {
     runSequence(
-        'lint-app',
-        ['css', 'bundle-nowatch'],
+        'jshint',
+        ['css', 'bundle-vendor', 'bundle-app'],
         ['uglify', 'minify'],
+        [], // concat
         callback
     );
 });
 
-gulp.task('build', ['bundle-watch', 'css']);
-gulp.task('build-webpack', ['bundle-nowatch', 'css']);
-
-gulp.task('webpack', ['build-webpack', 'watch'], function() {
-    return gulp.src('./app/src/app.js')
-        .pipe(webpack({
-        // TODO Set options  
-        }, null, function(err, stats) {
-            console.log(err, stats); 
-        })).pipe(gulp.dest('app/public/'));
+gulp.task('build', function(callback) {
+    runSequence(
+        ['bundle-vendor', 'watchify', 'css'],
+        callback
+    );
 });
 
 gulp.task('default', ['build'], function(callback) {
-    runSequence('watch', 'nodemon', 'lint-app', callback);
+    runSequence('watch', 'nodemon', 'jshint', callback);
 });

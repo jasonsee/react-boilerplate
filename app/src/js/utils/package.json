@@ -1,15 +1,14 @@
 {
-  "name": "stores",
+  "name": "utils",
   "version": "0.0.1",
   "private": true,
-  "description": "React Stores",
+  "description": "Utils",
   "repository": {
     "type": "git",
-    "url": "https://github.com/willowtreeapps/react-boilerplate/app/src/js/stores"
+    "url": "https://github.com/willowtreeapps/react-boilerplate/app/src/js/utils"
   },
   "dependencies": {
     
   },
   "main": "./main.js"
 }
-

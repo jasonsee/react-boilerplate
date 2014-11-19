@@ -7,5 +7,6 @@
     "url": "https://github.com/willowtreeapps/react-boilerplate/app/src/js/local_components"
   }, 
   "dependencies": {
-  }
+  },
+  "main": "./main.js"
 }

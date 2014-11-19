@@ -8,5 +8,6 @@
   "description": "React Constants",
   "dependencies": {
     
-  }
+  },
+  "main": "./main.js"
 }

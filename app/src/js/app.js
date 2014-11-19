@@ -1,8 +1,9 @@
 'use strict';
 
 window.React = require('react');
-var GithubLink = require('./components/github');
-var ClickCounter = require('./components/clickCounter');
+// var GithubLink = require('./components/github');
+// var ClickCounter = require('./components/clickCounter');
+var Actions = require('compwnents');
 
 var App = React.createClass({
     

@@ -6,5 +6,6 @@ function puts(error, stdout, stderr) { sys.puts(stdout) }
 exec('npm link app/src/js/actions', puts);
 exec('npm link app/src/js/constants', puts);
 exec('npm link app/src/js/dispatcher', puts);
-exec('npm link app/src/js/stores', puts);
 exec('npm link app/src/js/local_components', puts);
+exec('npm link app/src/js/stores', puts);
+exec('npm link app/src/js/utils', puts);

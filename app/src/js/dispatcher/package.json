@@ -7,5 +7,6 @@
     "url": "https://github.com/willowtreeapps/react-boilerplate/app/src/js/dispatcher"
   }, 
   "dependencies": {
-  }
+  },
+  "main": "./main.js"
 }

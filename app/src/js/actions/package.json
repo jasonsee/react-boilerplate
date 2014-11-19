@@ -8,5 +8,6 @@
   "description": "React Actions",
   "dependencies": {
   
-  }
+  },
+  "main": "./main.js"
 }
