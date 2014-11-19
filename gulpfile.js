@@ -29,12 +29,12 @@ var paths = {
 
 var dependencies = Object.keys(require('./package.json').dependencies);
 var appModules = [
-    'actions',
-    'constants',
-    'dispatcher',
-    'components',
-    'stores',
-    'utils'
+    './app/src/js/actions/',
+    './app/src/js/constants/',
+    './app/src/js/dispatcher/',
+    './app/src/js/components/',
+    './app/src/js/stores/',
+    './app/src/js/utils/'
 ]; 
 
 // https://gist.github.com/Sigmus/9253068

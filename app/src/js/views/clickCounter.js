@@ -2,7 +2,7 @@
 
 var CounterActions = require('actions').CounterActions;
 var CounterStore = require('stores').CounterStore;
-
+console.log(require('stores'));
 var ClickCounter = React.createClass({
     
     getInitialState: function() {
