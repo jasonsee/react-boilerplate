@@ -1,10 +1,10 @@
 {
-  "name": "local-components",
+  "name": "components",
   "version": "0.0.1",
   "description": "React project reusable components",
   "repository": {
     "type": "git",
-    "url": "https://github.com/willowtreeapps/react-boilerplate/app/src/js/local_components"
+    "url": "https://github.com/willowtreeapps/react-boilerplate/app/src/js/components"
   }, 
   "dependencies": {
   },

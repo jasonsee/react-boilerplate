@@ -32,7 +32,7 @@ var appModules = [
     'actions',
     'constants',
     'dispatcher',
-    'local-components',
+    'components',
     'stores',
     'utils'
 ]; 
