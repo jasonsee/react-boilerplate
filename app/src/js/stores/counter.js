@@ -10,7 +10,7 @@ var AppDispatcher = require('dispatcher/').AppDispatcher,
 var _count = 0;
 
 var CounterStore = assign({}, EventEmitter.prototype, {
-    
+
     emitChange: function() {
         this.emit(CHANGE_EVENT);
     },
@@ -20,7 +20,7 @@ var CounterStore = assign({}, EventEmitter.prototype, {
     },
 
     removeChangeListener: function(callback) {
-        this.removeListener(CHANGE_EVENT, callback); 
+        this.removeListener(CHANGE_EVENT, callback);
     },
 
     getCount: function() {
@@ -40,4 +40,3 @@ CounterStore.dispatcherToken = AppDispatcher.register(function(payload) {
 });
 
 module.exports = CounterStore;
-
