@@ -1,9 +1,3 @@
-"use strict";
-
-function exports() {
-    return {
-        AppConstants: require('./appConstants')
-    };
-}
-
-module.exports = exports();
+module.exports = {
+    AppConstants: require('../konstants/appConstants')
+};
