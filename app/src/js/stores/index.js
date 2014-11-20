@@ -1,3 +1,7 @@
+"use strict";
+
+var Counter = require('./counter');
+
 module.exports = {
-    Counter: require('./counter')
+    Counter: Counter
 };

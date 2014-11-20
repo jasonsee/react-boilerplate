@@ -1,3 +1,7 @@
+"use strict";
+
+var AppDispatcher = require('./appDispatcher');
+
 module.exports = {
-    AppDispatcher: require('./appDispatcher')
+    AppDispatcher: AppDispatcher
 };
