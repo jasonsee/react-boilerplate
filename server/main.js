@@ -9,7 +9,7 @@ var fs = require('fs');
 app.use('/', express['static'](staticPath));
 
 app.get("/", function(req, res) {
-    res.writeHeader(200, {"Content-Type": 'text/html'}); 
+    res.writeHeader(200, {"Content-Type": 'text/html'});
     fs.createReadStream(__dirname + '/views/index.html').pipe(res);
 });
 

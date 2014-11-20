@@ -5,15 +5,15 @@ var GithubLink = require('./views/github');
 var ClickCounter = require('./views/clickCounter');
 
 var App = React.createClass({
-    
+
     render: function() {
         return (
             <div>
-                <h1>WAT React Boilerplate</h1> 
+                <h1>WAT React Boilerplate</h1>
                 <GithubLink />
                 <ClickCounter />
             </div>
-        ); 
+        );
     }
 });
 

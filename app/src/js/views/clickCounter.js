@@ -4,7 +4,7 @@ var CounterActions = require('actions').Counter;
 var CounterStore = require('stores').Counter;
 
 var ClickCounter = React.createClass({
-    
+
     getInitialState: function() {
         return {
             count: CounterStore.getCount()
@@ -12,9 +12,9 @@ var ClickCounter = React.createClass({
     },
 
     componentDidMount: function() {
-        CounterStore.addChangeListener(this._onChange); 
+        CounterStore.addChangeListener(this._onChange);
     },
-    
+
     componentWillUnmount: function() {
         CounterStore.removeChangeListener(this._onChange);
     },
@@ -31,11 +31,11 @@ var ClickCounter = React.createClass({
 
     render: function() {
         return (
-            <div> 
+            <div>
                 <h2>Click Counter Example</h2>
                 <button onClick={this.increment}>Click Me</button>
                 <p>{this.state.count}</p>
-            </div>      
+            </div>
         );
     }
 });

@@ -150,13 +150,23 @@ gulp.task('jshint', function() {
     .pipe(jshint.reporter(stylish));
 });
 
-gulp.task('uglify', function() {
+gulp.task('uglify-vendor', function() {
+    return gulp.src('app/public/js/vendor.js')
+    .pipe(uglify({
+        mangle: true
+    }))
+    .pipe(gulp.dest('app/dist/js/'));
+});
+
+gulp.task('uglify-app', function() {
     return gulp.src('app/public/js/app.js')
     .pipe(uglify({
         mangle: true
     }))
     .pipe(gulp.dest('app/dist/js/'));
 });
+
+gulp.task('uglify', ['uglify-app', 'uglify-vendor']);
 
 gulp.task('minify', function() {
     return gulp.src('app/public/css/main.css')
@@ -235,7 +245,6 @@ gulp.task('release', ['clean'], function(callback) {
         'jshint',
         ['css', 'bundle-vendor', 'bundle-app'],
         ['uglify', 'minify'],
-        [], // concat
         callback
     );
 });

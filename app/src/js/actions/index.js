@@ -1,7 +1,9 @@
 "use strict";
 
-var Counter = require('./counter');
+function exports() {
+    return {
+        Counter: require('./counter')
+    }
+}
 
-module.exports = {
-    Counter: Counter
-};
+module.exports = exports();
