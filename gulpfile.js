@@ -28,14 +28,6 @@ var paths = {
 };
 
 var dependencies = Object.keys(require('./package.json').dependencies);
-var appModules = [
-    './app/src/js/actions/',
-    './app/src/js/constants/',
-    './app/src/js/dispatcher/',
-    './app/src/js/components/',
-    './app/src/js/stores/',
-    './app/src/js/utils/'
-]; 
 
 // https://gist.github.com/Sigmus/9253068
 function handleErrors() {
@@ -53,10 +45,13 @@ function bundleApp(watch) {
         fullPaths: env !== 'production',
         transform: [reactify, envify],
         cache: {}, 
-        packageCache: {}
+        packageCache: {},
+        paths: [
+            './node_modules',
+            './app/src/js'
+        ]
     })
     .external(dependencies)
-    .require(appModules)
     .add('./app/src/js/app.js');
     
     function rebundle() {
@@ -80,7 +75,7 @@ function bundleApp(watch) {
 
 gulp.task('bundle-vendor', function() {
     var bundle = browserify({
-        debug: false,
+        debug: true,
         fullPaths: false
     }).require(dependencies).bundle();
 

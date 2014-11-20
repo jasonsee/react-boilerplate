@@ -6,9 +6,6 @@
     "type": "git",
     "url": "https://github.com/willowtreeapps/react-boilerplate"
   },
-  "scripts": {
-    "postinstall": "node postInstall.js"
-  },
   "dependencies": {
     "compwnents": "~0.0.2",
     "flux": "~2.0.1",
