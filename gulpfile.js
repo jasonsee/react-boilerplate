@@ -147,6 +147,22 @@ gulp.task('jshint', function() {
             React: true
         }
     }))
+    .pipe(notify({
+        message: function (file) {
+            if (file.jshint.success) {
+                return false;
+            }
+
+            var errors = file.jshint.results.map(function (data) {
+                if (data.error) {
+                    return '\t' + data.error.line + ':' + data.error.character + ' ' + data.error.reason;
+                }
+            }).join('\n');
+
+            return file.relative + '\n' + errors ;
+        },
+        title: "JS Hint Error"
+    }))
     .pipe(jshint.reporter(stylish));
 });
 
