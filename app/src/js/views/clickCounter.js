@@ -1,7 +1,7 @@
 'use strict';
 
-var CounterActions = require('actions').Counter;
-var CounterStore = require('stores').Counter;
+var CounterActions = require('actions/counter');
+var CounterStore = require('stores/counter');
 
 var ClickCounter = React.createClass({
 

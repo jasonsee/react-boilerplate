@@ -7,7 +7,7 @@ var fs = require('fs'),
     jshint = require('gulp-jshint'),
     uglify = require('gulp-uglify'),
     minify = require('gulp-minify-css'),
-    jest = require('gulp-jest'),
+    jest = require('jest-cli'),
     react = require('gulp-react'),
     webpack = require('gulp-webpack'),
     del = require('del'),
@@ -139,6 +139,7 @@ gulp.task('jshint', function() {
         globals: {
             jest: true,
             it: true,
+            beforeEach: true,
             expect: true,
             describe: true,
             require: true,
@@ -206,47 +207,16 @@ gulp.task('clean-dist', function() {
 
 gulp.task('clean', ['clean-dist', 'clean-public']);
 
-gulp.task('jest', function() {
-    return gulp.src('app/src/js/')
-    .pipe(jest({
-        unmockedModulePathPatterns: [
-            'node_modules/react'
-        ],
-        testDirectoryName: '__tests__',
-        rootDir: './app/src/js'
-    }).on('error', handleErrors));
-});
-
-gulp.task('copy-modules', function(callback) {
-    var copiedModules = [];
-
-    function copyModule(module) {
-        return gulp.src(module + '/**/*')
-        .pipe(gulp.dest(__dirname + '/node_modules/' + module.split('/').pop()));
-    }
-    appModules.forEach(function(mod) {
-        copiedModules.push(copyModule(mod));
-
-        if (copiedModules.length === appModules.length) {
-            callback();
-        }
-    });
-});
-
-gulp.task('remove-modules', function() {
-    appModules.forEach(function(assetPath) {
-        var moduleName = assetPath.split('/').pop();
-        del.sync(__dirname + '/node_modules/' + moduleName);
-    });
-});
-
 gulp.task('test', function(callback) {
-    runSequence(
-        ['copy-modules'],
-        ['jest'],
-        ['remove-modules'],
-        callback
-    );
+    var onComplete = function (result) {
+        if (result) {
+        } else {
+            gutil.log('!!! Jest tests failed! You should fix them soon. !!!');
+        }
+        callback();
+    }
+
+    jest.runCLI({}, __dirname + '/app/src/js', onComplete);
 });
 
 gulp.task('watch', function() {

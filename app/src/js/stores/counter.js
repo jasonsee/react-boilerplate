@@ -1,9 +1,9 @@
 'use strict';
 
-var AppDispatcher = require('dispatcher/').AppDispatcher,
+var AppDispatcher = require('dispatcher/appDispatcher'),
     assign = require('react/lib/Object.assign'),
     EventEmitter = require('events').EventEmitter,
-    AppConstants = require('konstants').AppConstants,
+    AppConstants = require('constants/appConstants'),
     ActionTypes = AppConstants.ActionTypes,
     CHANGE_EVENT = 'change';
 

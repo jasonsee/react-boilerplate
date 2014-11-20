@@ -1,7 +1,7 @@
 'use strict';
 
-var AppDispatcher = require('dispatcher').AppDispatcher,
-    AppConstants = require('konstants').AppConstants,
+var AppDispatcher = require('dispatcher/appDispatcher'),
+    AppConstants = require('constants/appConstants'),
     ActionTypes = AppConstants.ActionTypes;
 
 var CounterActions = {
