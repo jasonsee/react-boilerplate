@@ -53,7 +53,7 @@ function bundleApp(watch) {
         debug: env !== 'production',
         fullPaths: env !== 'production',
         transform: [reactify, envify],
-        cache: {}, 
+        cache: {},
         packageCache: {},
         paths: [
             './app/src/js',
@@ -62,7 +62,7 @@ function bundleApp(watch) {
     })
     .external(dependencies)
     .add('./app/src/js/app.js');
-    
+
     function rebundle() {
         var stream = bundler.bundle();
         return stream.on('error', handleErrors)
@@ -70,7 +70,7 @@ function bundleApp(watch) {
         .pipe(gulp.dest('./app/public/js/'));
     }
 
-    bundler = watch ? watchify(bundler) : bundler; 
+    bundler = watch ? watchify(bundler) : bundler;
 
     bundler.on('update', function() {
         var startTime = Date.now();
@@ -78,7 +78,7 @@ function bundleApp(watch) {
         rebundle();
         gutil.log('Rebundled in ' + (Date.now() - startTime) + 'ms');
     });
-    
+
     return rebundle();
 }
 
@@ -94,7 +94,7 @@ gulp.task('bundle-vendor', function() {
 });
 
 gulp.task('watchify', function() {
-    return bundleApp(true); 
+    return bundleApp(true);
 });
 
 gulp.task('bundle-app', function() {
@@ -139,13 +139,13 @@ gulp.task('jshint', function() {
         globals: {
             jest: true,
             it: true,
-            expect: true, 
+            expect: true,
             describe: true,
             require: true,
             module: true,
             Promise: true,
             React: true
-        } 
+        }
     }))
     .pipe(jshint.reporter(stylish));
 });
@@ -161,17 +161,24 @@ gulp.task('uglify', function() {
 gulp.task('minify', function() {
     return gulp.src('app/public/css/main.css')
     .pipe(minify({
-    
+
     }))
     .pipe(gulp.dest('app/dist/css/'));
 });
 
-gulp.task('clean', function() {
-    return del('app/dist/**/*', function(err) {
-        if (err) { console.log(err); }
-        else { console.log('Dist removed'); }
+gulp.task('clean-public', function() {
+    return del('app/public/**/*', function(err) {
+        if (err) { gutil.log(err); }
     });
 });
+
+gulp.task('clean-dist', function() {
+    return del('app/dist/**/*', function(err) {
+        if (err) { gutil.log(err); }
+    });
+});
+
+gulp.task('clean', ['clean-dist', 'clean-public']);
 
 gulp.task('jest', function() {
     return gulp.src('app/src/js/')
@@ -184,27 +191,26 @@ gulp.task('jest', function() {
     }).on('error', handleErrors));
 });
 
-function copyModule(module) {
-    return gulp.src(module + '/**/*')
-    .pipe(gulp.dest(__dirname + '/node_modules/' + module.split('/').pop()));
-}
-
 gulp.task('copy-modules', function(callback) {
     var copiedModules = [];
 
+    function copyModule(module) {
+        return gulp.src(module + '/**/*')
+        .pipe(gulp.dest(__dirname + '/node_modules/' + module.split('/').pop()));
+    }
     appModules.forEach(function(mod) {
         copiedModules.push(copyModule(mod));
 
         if (copiedModules.length === appModules.length) {
             callback();
-        } 
-    });  
+        }
+    });
 });
 
 gulp.task('remove-modules', function() {
     appModules.forEach(function(assetPath) {
         var moduleName = assetPath.split('/').pop();
-        del.sync(__dirname + '/node_modules/' + moduleName); 
+        del.sync(__dirname + '/node_modules/' + moduleName);
     });
 });
 
@@ -214,7 +220,7 @@ gulp.task('test', function(callback) {
         ['jest'],
         ['remove-modules'],
         callback
-    );        
+    );
 });
 
 gulp.task('watch', function() {
@@ -236,6 +242,7 @@ gulp.task('release', ['clean'], function(callback) {
 
 gulp.task('build', function(callback) {
     runSequence(
+        ['clean-public'],
         ['bundle-vendor', 'watchify', 'css'],
         callback
     );
