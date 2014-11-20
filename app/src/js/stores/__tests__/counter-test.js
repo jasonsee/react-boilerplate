@@ -1,6 +1,6 @@
 'use strict';
 
-jest.dontMock('stores').CounterStore;
+jest.dontMock(require('stores').Counter);
 jest.dontMock('object-assign');
 
 describe('ClickStore', function() {

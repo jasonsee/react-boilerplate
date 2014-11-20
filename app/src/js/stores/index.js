@@ -1,3 +1,3 @@
 module.exports = {
-    CounterStore: require('./counterStore')
+    Counter: require('./counter')
 };

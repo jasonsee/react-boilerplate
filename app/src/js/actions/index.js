@@ -1,3 +1,3 @@
 module.exports = {
-    CounterActions: require('./counterActions')
+    Counter: require('./counter')
 };

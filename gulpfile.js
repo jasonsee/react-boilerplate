@@ -28,6 +28,15 @@ var paths = {
 };
 
 var dependencies = Object.keys(require('./package.json').dependencies);
+var appModules = [
+    'app/src/js/actions',
+    'app/src/js/components',
+    'app/src/js/dispatcher',
+    'app/src/js/konstants',
+    'app/src/js/mixins',
+    'app/src/js/stores',
+    'app/src/js/utils'
+];
 
 // https://gist.github.com/Sigmus/9253068
 function handleErrors() {
@@ -47,8 +56,8 @@ function bundleApp(watch) {
         cache: {}, 
         packageCache: {},
         paths: [
-            './node_modules',
-            './app/src/js'
+            './app/src/js',
+            './node_modules'
         ]
     })
     .external(dependencies)
@@ -93,7 +102,7 @@ gulp.task('bundle-app', function() {
 });
 
 gulp.task('css', function() {
-    gulp.src('./app/src/styles/main.scss')
+    return gulp.src('./app/src/styles/main.scss')
         .pipe(sass())
         .pipe(gulp.dest('app/public/css'));
 });
@@ -164,7 +173,7 @@ gulp.task('clean', function() {
     });
 });
 
-gulp.task('test', function() {
+gulp.task('jest', function() {
     return gulp.src('app/src/js/')
     .pipe(jest({
         unmockedModulePathPatterns: [
@@ -172,7 +181,40 @@ gulp.task('test', function() {
         ],
         testDirectoryName: '__tests__',
         rootDir: './app/src/js'
-    }));
+    }).on('error', handleErrors));
+});
+
+function copyModule(module) {
+    return gulp.src(module + '/**/*')
+    .pipe(gulp.dest(__dirname + '/node_modules/' + module.split('/').pop()));
+}
+
+gulp.task('copy-modules', function(callback) {
+    var copiedModules = [];
+
+    appModules.forEach(function(mod) {
+        copiedModules.push(copyModule(mod));
+
+        if (copiedModules.length === appModules.length) {
+            callback();
+        } 
+    });  
+});
+
+gulp.task('remove-modules', function() {
+    appModules.forEach(function(assetPath) {
+        var moduleName = assetPath.split('/').pop();
+        del.sync(__dirname + '/node_modules/' + moduleName); 
+    });
+});
+
+gulp.task('test', function(callback) {
+    runSequence(
+        ['copy-modules'],
+        ['jest'],
+        ['remove-modules'],
+        callback
+    );        
 });
 
 gulp.task('watch', function() {
