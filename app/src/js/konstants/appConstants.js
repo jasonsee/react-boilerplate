@@ -5,7 +5,7 @@ var keyMirror = require('react/lib/keyMirror');
 var AppConstants = {
 
     ActionTypes: keyMirror({
-        COUNTER_INCREMENT_COUNT: null        
+        COUNTER_INCREMENT_COUNT: null
     }),
 
     PayloadSources: keyMirror({
@@ -14,7 +14,7 @@ var AppConstants = {
     }),
 
     Routes: {
-        
+
     }
 };
 
