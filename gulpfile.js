@@ -172,7 +172,7 @@ gulp.task('uglify-vendor', function() {
     .pipe(uglify({
         mangle: true
     }))
-    .pipe(gulp.dest('client/dist/js/'));
+    .pipe(gulp.dest('dist/js/'));
 });
 
 gulp.task('uglify-app', function() {
@@ -180,7 +180,7 @@ gulp.task('uglify-app', function() {
     .pipe(uglify({
         mangle: true
     }))
-    .pipe(gulp.dest('client/dist/js/'));
+    .pipe(gulp.dest('dist/js/'));
 });
 
 gulp.task('uglify', ['uglify-app', 'uglify-vendor']);
@@ -190,7 +190,7 @@ gulp.task('minify', function() {
     .pipe(minify({
 
     }))
-    .pipe(gulp.dest('client/dist/css/'));
+    .pipe(gulp.dest('dist/css/'));
 });
 
 gulp.task('clean-public', function() {
@@ -200,7 +200,7 @@ gulp.task('clean-public', function() {
 });
 
 gulp.task('clean-dist', function() {
-    return del('client/dist/**/*', function(err) {
+    return del('dist/**/*', function(err) {
         if (err) { gutil.log(err); }
     });
 });

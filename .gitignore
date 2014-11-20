@@ -12,4 +12,4 @@ bower_components
 node_modules
 packages
 app/public
-app/dist
+dist
