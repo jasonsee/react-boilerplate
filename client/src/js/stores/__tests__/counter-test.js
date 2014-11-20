@@ -20,7 +20,6 @@ describe('CounterStore', function() {
     beforeEach(function() {
         AppDispatcher = require('../../dispatcher/appDispatcher');
         CounterStore = require('../counter');
-        console.log(CounterStore);
         callback = AppDispatcher.register.mock.calls;
     });
 

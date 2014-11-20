@@ -21,21 +21,21 @@ var fs = require('fs'),
 
 var env = process.env.NODE_ENV;
 var paths = {
-    styles: ['app/src/styles/**/*.scss'],
-    scripts: ['app/src/js/**/*.js'],
-    assets: ['app/src/assets/**/*'],
-    sprites: ['app/src/styles/sprites/**/*']
+    styles: ['client/src/styles/**/*.scss'],
+    scripts: ['client/src/js/**/*.js'],
+    assets: ['client/src/assets/**/*'],
+    sprites: ['client/src/styles/sprites/**/*']
 };
 
 var dependencies = Object.keys(require('./package.json').dependencies);
 var appModules = [
-    'app/src/js/actions',
-    'app/src/js/components',
-    'app/src/js/dispatcher',
-    'app/src/js/konstants',
-    'app/src/js/mixins',
-    'app/src/js/stores',
-    'app/src/js/utils'
+    'client/src/js/actions',
+    'client/src/js/components',
+    'client/src/js/dispatcher',
+    'client/src/js/konstants',
+    'client/src/js/mixins',
+    'client/src/js/stores',
+    'client/src/js/utils'
 ];
 
 // https://gist.github.com/Sigmus/9253068
@@ -56,18 +56,18 @@ function bundleApp(watch) {
         cache: {},
         packageCache: {},
         paths: [
-            './app/src/js',
+            './client/src/js',
             './node_modules'
         ]
     })
     .external(dependencies)
-    .add('./app/src/js/app.js');
+    .add('./client/src/js/app.js');
 
     function rebundle() {
         var stream = bundler.bundle();
         return stream.on('error', handleErrors)
         .pipe(source('app.js'))
-        .pipe(gulp.dest('./app/public/js/'));
+        .pipe(gulp.dest('./client/public/js/'));
     }
 
     bundler = watch ? watchify(bundler) : bundler;
@@ -90,7 +90,7 @@ gulp.task('bundle-vendor', function() {
 
     return bundle.on('error', handleErrors)
     .pipe(source('vendor.js'))
-    .pipe(gulp.dest('app/public/js/'));
+    .pipe(gulp.dest('client/public/js/'));
 });
 
 gulp.task('watchify', function() {
@@ -102,32 +102,32 @@ gulp.task('bundle-app', function() {
 });
 
 gulp.task('css', function() {
-    return gulp.src('./app/src/styles/main.scss')
+    return gulp.src('./client/src/styles/main.scss')
         .pipe(sass())
-        .pipe(gulp.dest('app/public/css'));
+        .pipe(gulp.dest('client/public/css'));
 });
 
 gulp.task('copy-assets', function() {
     return gulp.src(paths.assets)
-    .pipe(gulp.dest('app/public/assets/'));
+    .pipe(gulp.dest('client/public/assets/'));
 });
 
 gulp.task('copy-sprites', function() {
     return gulp.src(paths.sprites)
-    .pipe(gulp.dest('app/public/css/'));
+    .pipe(gulp.dest('client/public/css/'));
 });
 
 gulp.task('nodemon', function() {
     return nodemon({
         script: 'server/main.js',
         ext: 'js html',
-        ignore: __dirname + '/app/**/*.js',
+        ignore: __dirname + '/client/**/*.js',
     });
 });
 
 gulp.task('jshint', function() {
     gulp.src([
-        'app/src/js/**/*.js'
+        'client/src/js/**/*.js'
     ])
     .pipe(react()
     .on('error', handleErrors))
@@ -168,39 +168,39 @@ gulp.task('jshint', function() {
 });
 
 gulp.task('uglify-vendor', function() {
-    return gulp.src('app/public/js/vendor.js')
+    return gulp.src('client/public/js/vendor.js')
     .pipe(uglify({
         mangle: true
     }))
-    .pipe(gulp.dest('app/dist/js/'));
+    .pipe(gulp.dest('client/dist/js/'));
 });
 
 gulp.task('uglify-app', function() {
-    return gulp.src('app/public/js/app.js')
+    return gulp.src('client/public/js/app.js')
     .pipe(uglify({
         mangle: true
     }))
-    .pipe(gulp.dest('app/dist/js/'));
+    .pipe(gulp.dest('client/dist/js/'));
 });
 
 gulp.task('uglify', ['uglify-app', 'uglify-vendor']);
 
 gulp.task('minify', function() {
-    return gulp.src('app/public/css/main.css')
+    return gulp.src('client/public/css/main.css')
     .pipe(minify({
 
     }))
-    .pipe(gulp.dest('app/dist/css/'));
+    .pipe(gulp.dest('client/dist/css/'));
 });
 
 gulp.task('clean-public', function() {
-    return del('app/public/**/*', function(err) {
+    return del('client/public/**/*', function(err) {
         if (err) { gutil.log(err); }
     });
 });
 
 gulp.task('clean-dist', function() {
-    return del('app/dist/**/*', function(err) {
+    return del('client/dist/**/*', function(err) {
         if (err) { gutil.log(err); }
     });
 });
@@ -216,7 +216,7 @@ gulp.task('test', function(callback) {
         callback();
     }
 
-    jest.runCLI({}, __dirname + '/app/src/js', onComplete);
+    jest.runCLI({}, __dirname + '/client/src/js', onComplete);
 });
 
 gulp.task('watch', function() {
