@@ -2,7 +2,7 @@
 
 window.React = require('react');
 var GithubLink = require('./views/github');
-var ClickCounter = require('./views/clickCounter');
+var ClickCounter = require('components/clickCounter');
 
 var App = React.createClass({
 
