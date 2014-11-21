@@ -181,7 +181,6 @@ gulp.task('jshint', function() {
         .pipe(jshint.reporter(stylish));
 });
 
-
 gulp.task('minify', function() {
     return gulp.src('client/public/css/main.css')
         .pipe(minify())
@@ -236,103 +235,6 @@ gulp.task('build', function(callback) {
     );
 });
 
-
 gulp.task('default', ['build'], function(callback) {
     runSequence('watch', 'nodemon', 'jshint', callback);
 });
-
-/************************************
-  ******* Browserify Tasks **********
-  ***********************************/
-
-/*
-
-var browserify = require('browserify'),
-    watchify = require('watchify'),
-    reactify = require('reactify'),
-    envify = require('envify'),
-    uglify = require('gulp-uglify'),
-
-function bundleApp(watch) {
-    var bundler = browserify({
-        debug: env !== 'production',
-        fullPaths: env !== 'production',
-        transform: [reactify, envify],
-        cache: {},
-        packageCache: {},
-        paths: [
-            './client/src/js',
-            './node_modules'
-        ]
-    })
-        .external(dependencies)
-        .add('./client/src/js/app.js');
-
-    function rebundle() {
-        var stream = bundler.bundle();
-
-        return stream.on('error', handleErrors)
-            .pipe(source('app.js'))
-            .pipe(gulp.dest('./client/public/js/'));
-    }
-
-    bundler = watch ? watchify(bundler) : bundler;
-
-    bundler.on('update', function() {
-        var startTime = Date.now();
-        gutil.log('Rebundling...');
-        rebundle();
-        gutil.log('Rebundled in ' + (Date.now() - startTime) + 'ms');
-    });
-
-    return rebundle();
-}
-
-gulp.task('bundle-vendor', function() {
-    var bundle = browserify({
-        debug: true,
-        fullPaths: false
-    }).require(dependencies).bundle();
-
-    return bundle.on('error', handleErrors)
-        .pipe(source('vendor.js'))
-        .pipe(gulp.dest('client/public/js/'));
-});
-
-gulp.task('uglify-vendor', function() {
-    return gulp.src('client/public/js/vendor.js')
-        .pipe(uglify({
-            mangle: true
-        })).pipe(gulp.dest('dist/js/'));
-});
-
-gulp.task('uglify-app', function() {
-    return gulp.src('client/public/js/app.js')
-        .pipe(uglify({
-            mangle: true
-        })).pipe(gulp.dest('dist/js/'));
-});
-
-gulp.task('uglify', ['uglify-app', 'uglify-vendor']);
-
-gulp.task('watchify', function() {
-    return bundleApp(true);
-});
-
-gulp.task('bundle-app', function() {
-    return bundleApp(false);
-});
-
-gulp.task('build-browserify', function(callback) {
-    runSequence(
-        ['clean-public'],
-        ['bundle-vendor', 'watchify', 'css'],
-        callback
-    );
-});
-
-gulp.task('default', ['build-browserify'], function(callback) {
-    runSequence('watch', 'nodemon', 'jshint', callback);
-});
-
-*/
