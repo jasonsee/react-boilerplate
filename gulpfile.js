@@ -154,7 +154,15 @@ gulp.task('jshint', function() {
                 return false;
             }
 
-            var errors = file.jshint.results.map(function (data) {
+            var noConsoleErrors = file.jshint.results.filter(function (data) {
+                return !~data.error.reason.indexOf('\'console\' is not defined');
+            });
+
+            if (noConsoleErrors.length === 0) {
+                return false;
+            }
+
+            var errors = noConsoleErrors.map(function (data) {
                 if (data.error) {
                     return '\t' + data.error.line + ':' + data.error.character + ' ' + data.error.reason;
                 }
