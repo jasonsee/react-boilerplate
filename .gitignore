@@ -11,5 +11,5 @@ Gemfile.lock
 bower_components
 node_modules
 packages
-app/public
+client/public
 dist
