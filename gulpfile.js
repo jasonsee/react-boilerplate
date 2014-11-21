@@ -5,22 +5,17 @@ var fs = require('fs'),
     sass = require('gulp-sass'),
     nodemon = require('gulp-nodemon'),
     jshint = require('gulp-jshint'),
-    uglify = require('gulp-uglify'),
     minify = require('gulp-minify-css'),
     jest = require('jest-cli'),
     react = require('gulp-react'),
     webpack = require('webpack'),
-    WebpackDevServer = require('webpack-dev-server'),
     del = require('del'),
-    browserify = require('browserify'),
-    watchify = require('watchify'),
-    reactify = require('reactify'),
-    envify = require('envify'),
     source = require('vinyl-source-stream'),
     runSequence = require('run-sequence'),
     stylish = require('jshint-stylish');
 
 var env = process.env.NODE_ENV;
+
 var paths = {
     styles: ['client/src/styles/**/*.scss'],
     scripts: ['client/src/js/**/*.js'],
@@ -29,15 +24,6 @@ var paths = {
 };
 
 var dependencies = Object.keys(require('./package.json').dependencies);
-var appModules = [
-    'client/src/js/actions',
-    'client/src/js/components',
-    'client/src/js/dispatcher',
-    'client/src/js/konstants',
-    'client/src/js/mixins',
-    'client/src/js/stores',
-    'client/src/js/utils'
-];
 
 // https://gist.github.com/Sigmus/9253068
 function handleErrors() {
@@ -49,118 +35,76 @@ function handleErrors() {
     this.emit('end');
 }
 
-function bundleApp(watch) {
-    var bundler = browserify({
-        debug: env !== 'production',
-        fullPaths: env !== 'production',
-        transform: [reactify, envify],
-        cache: {},
-        packageCache: {},
-        paths: [
-            './client/src/js',
-            './node_modules'
+gulp.task('webpack:release', function(callback) {
+    webpack({
+        cache: false,
+        watch: false,
+        entry: {
+            app: './client/src/js/app',
+            vendor: dependencies
+        },
+        output: {
+            path: __dirname + '/dist/js',
+            filename: 'app.js'
+        },
+        module: {
+            loaders: [
+                { test: /\.js$/, loader: 'jsx-loader' }
+            ]
+        },
+        resolve: {
+            root: __dirname + '/client/src/js'
+        },
+        plugins: [
+            new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.js'),
+            new webpack.DefinePlugin({
+			    "process.env": {
+				    // This has effect on the react lib size
+				    "NODE_ENV": JSON.stringify("production")
+			    }
+		    }),
+		    new webpack.optimize.DedupePlugin(),
+		    new webpack.optimize.UglifyJsPlugin()
         ]
-    })
-        .external(dependencies)
-        .add('./client/src/js/app.js');
-
-    function rebundle() {
-        var stream = bundler.bundle();
-
-        return stream.on('error', handleErrors)
-            .pipe(source('app.js'))
-            .pipe(gulp.dest('./client/public/js/'));
-    }
-
-    bundler = watch ? watchify(bundler) : bundler;
-
-    bundler.on('update', function() {
-        var startTime = Date.now();
-        gutil.log('Rebundling...');
-        rebundle();
-        gutil.log('Rebundled in ' + (Date.now() - startTime) + 'ms');
-    });
-
-    return rebundle();
-}
-
-var webpackConfig = {
-    cache: true,
-    entry: {
-        app: './client/src/js/app',
-        vendor: dependencies
-    },
-    output: {
-        path: __dirname + '/client/public/js',
-        publicPath: './',
-        filename: 'app.js'
-    },
-    module: {
-        loaders: [
-            { test: /\.js$/,  loader: "jsx-loader" }
-        ]
-    },
-    resolve: {
-        root: __dirname + '/client/src/js'
-    },
-    plugins: [
-        new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.js')
-    ]
-};
-
-gulp.task('webpack', function(callback) {
-    webpack(webpackConfig, function(err, stats) {
+    }, function(err, stats) {
         if (err) {
              throw new gutil.PluginError("webpack:build-dev", err);
         }
 		gutil.log("[webpack:build-dev]", stats.toString({colors: true}));
-		callback();
-    });
-});
+    })
+})
 
-gulp.task('webpack-server', function(callback) {
-    var wpConfigServer = Object.create(webpackConfig);
-    wpConfigServer.devtool = 'eval';
-    wpConfigServer.debug = true;
-
-    var compiler = webpack(wpConfigServer);
-
-    var server = new WebpackDevServer(compiler, {
-        contentBase: 'http://localhost:5000',
-        publicPath: 'http://localhost:5001/',
-        // quiet: false,
-        // noInfo: false,
-        // lazy: true,
-        // watchDelay: 300,
-        // stats: { colors: true }
-    });
-
-    server.listen(5001, 'localhost', function(err) {
-        if(err) {
-            throw new gutil.PluginError("webpack-dev-server", err);
+gulp.task('webpack', function(callback) {
+    webpack({
+        cache: true,
+        watch: true,
+        watchDelay: 200,
+        entry: {
+            app: './client/src/js/app',
+            vendor: dependencies
+        },
+        output: {
+            path: __dirname + '/client/public/js',
+            filename: 'app.js'
+        },
+        module: {
+            loaders: [
+                { test: /\.js$/,  loader: "jsx-loader" }
+            ]
+        },
+        resolve: {
+            root: __dirname + '/client/src/js'
+        },
+        plugins: [
+            new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.js')
+        ]
+    }, function(err, stats) {
+        if (err) {
+             throw new gutil.PluginError("webpack:build-dev", err);
         }
-
-		gutil.log("[webpack-dev-server]", "http://localhost:5001/webpack-dev-server/");
+		gutil.log("[webpack:build-dev]", stats.toString({colors: true}));
     });
-});
-
-gulp.task('bundle-vendor', function() {
-    var bundle = browserify({
-        debug: true,
-        fullPaths: false
-    }).require(dependencies).bundle();
-
-    return bundle.on('error', handleErrors)
-        .pipe(source('vendor.js'))
-        .pipe(gulp.dest('client/public/js/'));
-});
-
-gulp.task('watchify', function() {
-    return bundleApp(true);
-});
-
-gulp.task('bundle-app', function() {
-    return bundleApp(false);
+    callback();
 });
 
 gulp.task('css', function() {
@@ -188,7 +132,7 @@ gulp.task('nodemon', function() {
 });
 
 gulp.task('jshint', function() {
-    gulp.src([
+    return gulp.src([
         'client/src/js/**/*.js'
     ])
         .pipe(react()
@@ -237,21 +181,6 @@ gulp.task('jshint', function() {
         .pipe(jshint.reporter(stylish));
 });
 
-gulp.task('uglify-vendor', function() {
-    return gulp.src('client/public/js/vendor.js')
-        .pipe(uglify({
-            mangle: true
-        })).pipe(gulp.dest('dist/js/'));
-});
-
-gulp.task('uglify-app', function() {
-    return gulp.src('client/public/js/app.js')
-        .pipe(uglify({
-            mangle: true
-        })).pipe(gulp.dest('dist/js/'));
-});
-
-gulp.task('uglify', ['uglify-app', 'uglify-vendor']);
 
 gulp.task('minify', function() {
     return gulp.src('client/public/css/main.css')
@@ -270,8 +199,6 @@ gulp.task('clean-dist', function() {
         if (err) { gutil.log(err); }
     });
 });
-
-gulp.task('clean', ['clean-dist', 'clean-public']);
 
 gulp.task('test', function(callback) {
     var onComplete = function (result) {
@@ -292,19 +219,11 @@ gulp.task('watch', function() {
     gulp.watch(paths.sprites, ['copy-sprites']);
 });
 
-gulp.task('release', ['clean'], function(callback) {
+gulp.task('release', function(callback) {
     runSequence(
-        'jshint',
-        ['css', 'bundle-vendor', 'bundle-app'],
-        ['uglify', 'minify'],
-        callback
-    );
-});
-
-gulp.task('build-webpack', function(callback) {
-    runSequence(
-        ['clean-public'],
-        ['css'],
+        ['clean-public', 'clean-dist'],
+        ['css', 'jshint'],
+        ['minify', 'webpack:release'],
         callback
     );
 });
@@ -312,16 +231,108 @@ gulp.task('build-webpack', function(callback) {
 gulp.task('build', function(callback) {
     runSequence(
         ['clean-public'],
+        ['webpack', 'css'],
+        callback
+    );
+});
+
+
+gulp.task('default', ['build'], function(callback) {
+    runSequence('watch', 'nodemon', 'jshint', callback);
+});
+
+/************************************
+  ******* Browserify Tasks **********
+  ***********************************/
+
+/*
+
+var browserify = require('browserify'),
+    watchify = require('watchify'),
+    reactify = require('reactify'),
+    envify = require('envify'),
+    uglify = require('gulp-uglify'),
+
+function bundleApp(watch) {
+    var bundler = browserify({
+        debug: env !== 'production',
+        fullPaths: env !== 'production',
+        transform: [reactify, envify],
+        cache: {},
+        packageCache: {},
+        paths: [
+            './client/src/js',
+            './node_modules'
+        ]
+    })
+        .external(dependencies)
+        .add('./client/src/js/app.js');
+
+    function rebundle() {
+        var stream = bundler.bundle();
+
+        return stream.on('error', handleErrors)
+            .pipe(source('app.js'))
+            .pipe(gulp.dest('./client/public/js/'));
+    }
+
+    bundler = watch ? watchify(bundler) : bundler;
+
+    bundler.on('update', function() {
+        var startTime = Date.now();
+        gutil.log('Rebundling...');
+        rebundle();
+        gutil.log('Rebundled in ' + (Date.now() - startTime) + 'ms');
+    });
+
+    return rebundle();
+}
+
+gulp.task('bundle-vendor', function() {
+    var bundle = browserify({
+        debug: true,
+        fullPaths: false
+    }).require(dependencies).bundle();
+
+    return bundle.on('error', handleErrors)
+        .pipe(source('vendor.js'))
+        .pipe(gulp.dest('client/public/js/'));
+});
+
+gulp.task('uglify-vendor', function() {
+    return gulp.src('client/public/js/vendor.js')
+        .pipe(uglify({
+            mangle: true
+        })).pipe(gulp.dest('dist/js/'));
+});
+
+gulp.task('uglify-app', function() {
+    return gulp.src('client/public/js/app.js')
+        .pipe(uglify({
+            mangle: true
+        })).pipe(gulp.dest('dist/js/'));
+});
+
+gulp.task('uglify', ['uglify-app', 'uglify-vendor']);
+
+gulp.task('watchify', function() {
+    return bundleApp(true);
+});
+
+gulp.task('bundle-app', function() {
+    return bundleApp(false);
+});
+
+gulp.task('build-browserify', function(callback) {
+    runSequence(
+        ['clean-public'],
         ['bundle-vendor', 'watchify', 'css'],
         callback
     );
 });
 
-gulp.task('run-webpack', ['build-webpack'], function(callback) {
-    process.env.WEBPACK = 'ACTIVE';
-    runSequence('watch', 'nodemon', 'jshint', 'webpack-server', callback);
-});
-
-gulp.task('default', ['build'], function(callback) {
+gulp.task('default', ['build-browserify'], function(callback) {
     runSequence('watch', 'nodemon', 'jshint', callback);
 });
+
+*/

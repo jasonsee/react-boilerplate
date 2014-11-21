@@ -8,11 +8,9 @@ var fs = require('fs');
 
 app.use('/', express['static'](staticPath));
 
-var index = process.env.WEBPACK === 'ACTIVE' ? 'webpack.html' : 'index.html';
-
 app.get("/", function(req, res) {
     res.writeHeader(200, {"Content-Type": 'text/html'});
-    fs.createReadStream(__dirname + '/views/' + index).pipe(res);
+    fs.createReadStream(__dirname + '/views/index.html').pipe(res);
 });
 
 app.listen(port, function() {
