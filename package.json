@@ -27,6 +27,7 @@
     "jest-cli": "~0.1.17",
     "jshint-stylish": "~1.0.0",
     "jsx-loader": "~0.12.2",
+    "request": "~2.48.0",
     "run-sequence": "~1.0.1",
     "vinyl-source-stream": "~1.0.0",
     "webpack": "~1.4.13"

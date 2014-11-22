@@ -1,5 +1,4 @@
-var fs = require('fs'),
-    gulp = require('gulp'),
+var gulp = require('gulp'),
     gutil = require('gulp-util'),
     notify = require('gulp-notify'),
     sass = require('gulp-sass'),
