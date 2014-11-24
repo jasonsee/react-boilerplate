@@ -7,6 +7,7 @@ var staticPath = env === 'production' ? './dist' : './client/public';
 var fs = require('fs');
 var request = require('request');
 
+// ******** PROXY ********* //
 var API = 'http://localhost:8000';
 
 app.all('/api/*', function(req, res) {
@@ -18,6 +19,7 @@ app.all('/api/*', function(req, res) {
         body: req.body
     })).pipe(res);
 });
+// ************************ //
 
 app.use('/', express['static'](staticPath));
 

@@ -220,6 +220,7 @@ gulp.task('watch', function() {
 gulp.task('release', function(callback) {
     runSequence(
         ['clean-public', 'clean-dist'],
+        ['copy-assets', 'copy-sprites'],
         ['css', 'jshint'],
         ['minify', 'webpack:release'],
         callback
@@ -229,6 +230,7 @@ gulp.task('release', function(callback) {
 gulp.task('build', function(callback) {
     runSequence(
         ['clean-public'],
+        ['copy-assets', 'copy-sprites'],
         ['webpack', 'css'],
         callback
     );
