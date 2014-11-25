@@ -48,7 +48,7 @@ gulp.task('webpack:release', function(callback) {
         },
         module: {
             loaders: [
-                { test: /\.js$/, loader: 'jsx-loader' }
+                { test: /\.js$/, loader: 'jsx-loader?harmony' }
             ]
         },
         resolve: {
@@ -69,7 +69,7 @@ gulp.task('webpack:release', function(callback) {
         if (err) {
              throw new gutil.PluginError("webpack:build-dev", err);
         }
-		gutil.log("[webpack:build-dev]", stats.toString({colors: true}));
+		gutil.log("[webpack:build-dev]", stats.toString({colors: true, modules: false, chunks: false}));
     })
 })
 
@@ -88,7 +88,7 @@ gulp.task('webpack', function(callback) {
         },
         module: {
             loaders: [
-                { test: /\.js$/,  loader: "jsx-loader" }
+                { test: /\.js$/,  loader: "jsx-loader?harmony" }
             ]
         },
         resolve: {
@@ -101,7 +101,7 @@ gulp.task('webpack', function(callback) {
         if (err) {
              throw new gutil.PluginError("webpack:build-dev", err);
         }
-		gutil.log("[webpack:build-dev]", stats.toString({colors: true}));
+		gutil.log("[webpack:build-dev]", stats.toString({colors: true, modules: false, chunks: false}));
     });
     callback();
 });
