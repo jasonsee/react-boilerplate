@@ -39,12 +39,12 @@ gulp.task('webpack:release', function(callback) {
         cache: false,
         watch: false,
         entry: {
-            app: './client/src/js/app',
+            main: './client/src/js/main',
             vendor: dependencies
         },
         output: {
             path: __dirname + '/dist/js',
-            filename: 'app.js'
+            filename: 'main.js'
         },
         module: {
             loaders: [
@@ -79,12 +79,12 @@ gulp.task('webpack', function(callback) {
         watch: true,
         watchDelay: 200,
         entry: {
-            app: './client/src/js/app',
+            main: './client/src/js/main',
             vendor: dependencies
         },
         output: {
             path: __dirname + '/client/public/js',
-            filename: 'app.js'
+            filename: 'main.js'
         },
         module: {
             loaders: [
