@@ -2,10 +2,10 @@ var gulp = require('gulp'),
     gutil = require('gulp-util'),
     notify = require('gulp-notify'),
     sass = require('gulp-sass'),
+    autoprefixer = require('gulp-autoprefixer'),
     nodemon = require('gulp-nodemon'),
     jshint = require('gulp-jshint'),
     minify = require('gulp-minify-css'),
-    jest = require('jest-cli'),
     react = require('gulp-react'),
     webpack = require('webpack'),
     del = require('del'),
@@ -48,7 +48,7 @@ gulp.task('webpack:release', function(callback) {
         },
         module: {
             loaders: [
-                { test: /\.js$/, loader: 'jsx-loader?harmony' }
+                { test: /\.js$/,  loader: "jsx-loader?harmony&stripTypes&es5" }
             ]
         },
         resolve: {
@@ -69,7 +69,7 @@ gulp.task('webpack:release', function(callback) {
         if (err) {
              throw new gutil.PluginError("webpack:build-dev", err);
         }
-		gutil.log("[webpack:build-dev]", stats.toString({colors: true, modules: false, chunks: false}));
+		gutil.log("[webpack:build-dev]", stats.toString({colors: true}));
     })
 })
 
@@ -88,7 +88,7 @@ gulp.task('webpack', function(callback) {
         },
         module: {
             loaders: [
-                { test: /\.js$/,  loader: "jsx-loader?harmony" }
+                { test: /\.js$/,  loader: "jsx-loader?harmony&stripTypes&es5" }
             ]
         },
         resolve: {
@@ -107,9 +107,23 @@ gulp.task('webpack', function(callback) {
 });
 
 gulp.task('css', function() {
-    return gulp.src('./client/src/styles/main.scss')
-        .pipe(sass())
+    return gulp.src('./client/src/styles/style.scss')
+        .pipe(sass({
+            imagePath: 'client/public/assets/images',
+            includePaths: ['node_modules/argan/client/src/scss/inuit']
+        }).on('error', handleErrors))
+        .pipe(autoprefixer('last 2 version', 'safari 5', 'ie 8', 'ie 9', 'opera 12.1'))
         .pipe(gulp.dest('client/public/css'));
+});
+
+gulp.task('copy-assets-release', function() {
+    return gulp.src(paths.assets)
+        .pipe(gulp.dest('dist/assets/'));
+});
+
+gulp.task('copy-sprites-release', function() {
+    return gulp.src(paths.sprites)
+        .pipe(gulp.dest('dist/css'));
 });
 
 gulp.task('copy-assets', function() {
@@ -141,6 +155,7 @@ gulp.task('jshint', function() {
             devel: false,
             globalstrict: true,
             es3: true,
+            esnext: true,
             globals: {
                 jest: true,
                 it: true,
@@ -181,14 +196,15 @@ gulp.task('jshint', function() {
 });
 
 gulp.task('minify', function() {
-    return gulp.src('client/public/css/main.css')
+    return gulp.src('client/public/css/style.css')
         .pipe(minify())
         .pipe(gulp.dest('dist/css/'));
 });
 
-gulp.task('clean-public', function() {
-    return del('client/public/**/*', function(err) {
+gulp.task('clean-public', function(callback) {
+    del('client/public/**/*', function(err) {
         if (err) { gutil.log(err); }
+        callback();
     });
 });
 
@@ -196,18 +212,6 @@ gulp.task('clean-dist', function() {
     return del('dist/**/*', function(err) {
         if (err) { gutil.log(err); }
     });
-});
-
-gulp.task('test', function(callback) {
-    var onComplete = function (result) {
-        if (result) {
-        } else {
-            gutil.log('!!! Jest tests failed! You should fix them soon. !!!');
-        }
-        callback();
-    }
-
-    jest.runCLI({}, __dirname + '/client/src/js', onComplete);
 });
 
 gulp.task('watch', function() {
@@ -220,7 +224,8 @@ gulp.task('watch', function() {
 gulp.task('release', function(callback) {
     runSequence(
         ['clean-public', 'clean-dist'],
-        ['copy-assets', 'copy-sprites'],
+        ['copy-assets'],
+        ['copy-assets-release', 'copy-sprites-release'],
         ['css', 'jshint'],
         ['minify', 'webpack:release'],
         callback
