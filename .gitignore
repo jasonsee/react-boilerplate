@@ -13,3 +13,5 @@ node_modules
 packages
 client/public
 dist
+npm-debug.log
+Session.vim
