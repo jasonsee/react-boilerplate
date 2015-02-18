@@ -54,6 +54,7 @@ var webpackConfig = require('../webpackConfig');
 var server = new WebpackDevServer(webpack(webpackConfig), {
     publicPath: webpackConfig.output.publicPath,
     hot: true,
+    quiet: true,
     contentBase: './client',
     noContentBase: false
 });
