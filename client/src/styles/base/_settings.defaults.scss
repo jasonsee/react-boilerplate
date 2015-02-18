@@ -1,0 +1,22 @@
+///*------------------------------------*\
+//    #DEFAULTS
+//\*------------------------------------*/
+
+// High-level base settings.
+$inuit-base-font-size:          16px;
+$inuit-base-line-height:        24px;
+$inuit-base-text-color:         $color-text;
+$inuit-base-background-color:   $color-backgrounds;
+
+// Namespace.
+//
+// Would you like inuitcss’ classes to be prepended with a namespace? If so,
+// define it here.
+$inuit-namespace:               null;
+
+// These variables are framework variables, sourced from variables defined
+// above. Feel free to use these variables throughout your project, but do not
+// modify or reassign them.
+$inuit-base-spacing-unit:           $inuit-base-line-height;
+$inuit-base-spacing-unit--small:    round($inuit-base-spacing-unit / 2);
+$inuit-base-spacing-unit--large:    round($inuit-base-spacing-unit * 2);

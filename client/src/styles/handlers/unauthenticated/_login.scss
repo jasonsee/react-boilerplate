@@ -1,0 +1,48 @@
+
+.login-container {
+    display: flex;
+    flex-flow: row wrap;
+
+    border-radius: 8px;
+    border: 2px solid $color-borders;
+    background: $color-white;
+    padding: 50px;
+
+    width: 650px;
+    margin: auto;
+
+    .error {
+        margin-bottom: 20px;
+    }
+
+    input, h1 {
+        width: 100%;
+    }
+
+    img {
+        margin: auto;
+        margin-bottom: 50px;
+    }
+
+    .logo {
+
+    }
+
+    .submit {
+        order: 2;
+        margin-left: auto;
+    }
+
+    .forgot-password {
+        order: 1;
+    }
+}
+
+
+
+
+
+
+
+
+
