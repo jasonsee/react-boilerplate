@@ -31,4 +31,20 @@ some minimal setup.
 
 6. Start the development server with `gulp`.
 
+##Goodies
 
+Here are some common, custom patterns you can use with the boilerplate.
+
+###Simple Proxy
+
+No need to worry about Cross domain calls! To fetch outside data...
+
+```
+var request = require('superagent');
+
+// For your server...
+request('/api/session/login');
+
+// For monkeypod
+request('/monkeypod/session/login');
+```
