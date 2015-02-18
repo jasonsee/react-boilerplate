@@ -1,19 +1,22 @@
 var express = require('express');
 var app = express();
 var path = require('path');
-var port = 2000;
-var env = process.env.NODE_ENV || 'development';
-var staticPath = env === 'production' ? './dist' : './client/public';
-var fs = require('fs');
-var request = require('request');
-
 
 var pushStatePath = /^(?!\/public)(?!\/src)(?!.*html)(?!.*xml).*/;
-var staticRoot = path.join(__dirname, '..', 'client');
+var staticRoot = path.join(__dirname, '.', 'client');
+
+var webpack = require('webpack');
+var WebpackDevServer = require('webpack-dev-server');
+var config = require('./config');
+var webpackConfig = require('./webpackConfig');
+
+var API = config.apiUrl;
+var MONKEYPOD = config.monkeypodUrl;
+
 
 // ******** PROXY ********* //
-var API = 'http://atcpoc1:8080/DSS';
 
+// request('/api/session/login')
 app.all('/api/*', function(req, res) {
     console.log('[' + req.method + ']: ' + API + req.url);
     req.pipe(request({
@@ -24,11 +27,9 @@ app.all('/api/*', function(req, res) {
     })).pipe(res);
 });
 
-var MONKEYPOD = 'https://monkeypod.io:443/mpapi/DSServices/CCTR/CallCenter/api';
+// request('/monkeypod/session/login')
 app.all('/monkeypod/*', function(req, res) {
-
     var url = req.url.replace('/monkeypod', '');
-
     console.log('[' + req.method + ']: ' + MONKEYPOD + url);
     req.pipe(request({
         headers: req.headers,
@@ -37,18 +38,13 @@ app.all('/monkeypod/*', function(req, res) {
         body: req.body
     })).pipe(res);
 });
+
 // ************************ //
 
+// Set up push state so it will work with webpack
 app.all(pushStatePath, function (req, res) {
     res.sendfile(staticRoot + '/index.html');
 });
-
-
-var config = require('../config');
-var webpack = require('webpack');
-var WebpackDevServer = require('webpack-dev-server');
-var webpackConfig = require('../webpackConfig');
-
 
 // Create our webpack server, this will host our static files
 var server = new WebpackDevServer(webpack(webpackConfig), {
@@ -66,5 +62,4 @@ server.listen(config.port, 'localhost', function (err, result) {
     if (err) { return console.log(err); }
     console.log('Listening at localhost:'+config.port);
 });
-
 

@@ -124,7 +124,7 @@ gulp.task('copy-sprites', function() {
 
 gulp.task('nodemon', function() {
     return nodemon({
-        script: 'server/main.js',
+        script: 'proxy.js',
         ext: 'js html',
         ignore: __dirname + '/client/**/*.js',
     });
