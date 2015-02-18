@@ -16,15 +16,8 @@ var AppConstants = {
 
         user: {
             GET: null
-        },
-
-        customer: {
-            GET: null
-        },
-
-        uiform: {
-            SET: null
         }
+
     })
 
 };

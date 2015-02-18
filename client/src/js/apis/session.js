@@ -16,19 +16,12 @@ module.exports = {
         credentials = _.pick(['username', 'password'], credentials);
 
         return new Promise(function(resolve, reject) {
-            request
-                .post('/api/authentication/login')
-                .send(credentials)
-                .end(function(res) {
-                    console.log(res.body);
-                    resolve(res.body);
-                });
-            //setTimeout(function() {
-                //resolve(_.merge(credentials, {
-                    //firstName: 'Willow',
-                    //lastName: 'Smith-Tree'
-                //}));
-            //}, 0);
+            setTimeout(function() {
+                resolve(_.merge(credentials, {
+                    firstName: 'Willow',
+                    lastName: 'Smith-Tree'
+                }));
+            }, 0);
         });
     },
 

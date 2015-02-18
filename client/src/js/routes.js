@@ -5,8 +5,7 @@ var { Route, RouteHandler, Link, DefaultRoute, NotFoundRoute } = require('react-
 var App = require('handlers/app');
 
 var { Unauthenticated, Login} = require('handlers/unauthenticated');
-var { Authenticated, Dashboard } = require('handlers/authenticated');
-var { Search } = require('handlers/authenticated/search');
+var { Authenticated, Dashboard, Profile } = require('handlers/authenticated');
 
 var routes = (
     <Route name="app" path="/" handler={App}>
@@ -16,9 +15,9 @@ var routes = (
         </Route>
 
         <Route name="authenticated" handler={Authenticated}>
-            <Route name="search" path="/search" handler={Search} />
+            <Route name="profile" path="/profile" handler={Profile} />
             <Route name="dashboard" path="/dashboard" handler={Dashboard} />
-            <DefaultRoute handler={Search} />
+            <DefaultRoute handler={Profile} />
         </Route>
 
         <DefaultRoute handler={Login} />

@@ -35,9 +35,10 @@ var Authenticated = React.createClass({displayName: "Authenticated",
 
     render: function() {
         return <div className="authenticated-container">
-            {/*<span onClick={this.logout}>Logout</span>*/}
-            {/*<Link to="search">Search</Link>*/}
-            {/*<Link to="dashboard">Dashboard</Link>*/}
+
+            <span onClick={this.logout}>Logout</span>
+            <Link to="profile">Profile</Link>
+            <Link to="dashboard">Dashboard</Link>
 
             <RouteHandler />
         </div>;

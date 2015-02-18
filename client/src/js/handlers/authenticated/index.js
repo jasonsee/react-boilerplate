@@ -2,6 +2,6 @@
 
 module.exports = {
     Authenticated: require('./base'),
-    Search: require('./search/base'),
+    Profile: require('./profile'),
     Dashboard: require('./dashboard')
 };

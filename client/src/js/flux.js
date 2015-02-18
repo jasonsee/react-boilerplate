@@ -12,13 +12,11 @@ var { Flux, FluxMixin, StoreWatchMixin } = require('fluxxor');
 
 var stores = {
     SessionStore: require('stores/session'),
-    CustomerStore: require('stores/customer'),
     UserStore: require('stores/user')
 };
 
 var actions = {
     session: require('actions/session'),
-    customer: require('actions/customer'),
     user: require('actions/user')
 };
 

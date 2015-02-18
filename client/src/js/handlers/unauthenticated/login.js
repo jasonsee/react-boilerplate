@@ -42,7 +42,7 @@ var LoginView = React.createClass({
                     LoginView.attemptedTransition.retry();
                     LoginView.attemptedTransition = undefined;
                 } else {
-                    this.replaceWith('search');
+                    this.replaceWith('dashboard');
                 }
             })
             .catch((error) => {
@@ -67,8 +67,6 @@ var LoginView = React.createClass({
 
             <PImg width="300" height="100" className="logo" />
 
-            <hr />
-
             <h1>Log In</h1>
 
             <span className="error">{this.state.error}</span>
@@ -87,6 +85,7 @@ var LoginView = React.createClass({
 
             <button className="submit" onClick={this.submit}>Submit</button>
             <span className="a forgot-password">Forgot Password?</span>
+
         </div>;
     }
 });

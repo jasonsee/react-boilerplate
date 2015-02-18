@@ -19,7 +19,6 @@ var UserStore = Tuxxor.createStore({
     loginSuccess: function([user, transactionId]) {
         this.waitFor(['SessionStore'], (SessionStore) => {
             this.setUser(user);
-            console.log(user);
         });
     },
 
