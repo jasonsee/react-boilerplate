@@ -1,11 +1,7 @@
 'use strict';
 
-var AppConstants = require('constants');
-var ActionTypes = AppConstants.ActionTypes;
-var Tuxxor = require('helpers/tuxxor');
-var Promise = require('bluebird');
+var {promised} = require('helpers/tuxxor');
 var SessionAPI = require('apis/session');
-
 
 var login = function(credentials) {
     return SessionAPI.login(credentials);
@@ -15,11 +11,10 @@ var logout = function() {
     return SessionAPI.logout();
 };
 
-
-var SessionActions = Tuxxor.createActions({
-    login: [ActionTypes.session.LOGIN, login],
-    logout: [ActionTypes.session.LOGOUT, logout]
-});
+var SessionActions = {
+    login: promised("SESSION_LOGIN", login),
+    logout: promised("SESSION_LOGOUT", logout)
+};
 
 module.exports = SessionActions;
 

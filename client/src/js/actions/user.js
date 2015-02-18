@@ -1,8 +1,7 @@
 'use strict';
 
 var Promise = require('bluebird');
-var Tuxxor = require('helpers/tuxxor');
-var UserConstants = require('constants').ActionTypes.user;
+var {promised} = require('helpers/tuxxor');
 var UserAPI = require('apis/user');
 
 
@@ -11,9 +10,9 @@ var get = function(credentials) {
 };
 
 
-var UserActions = Tuxxor.createActions({
-    get: [UserConstants.GET, get]
-});
+var UserActions = {
+    get: promised('USER_GET', get)
+};
 
 
 module.exports = UserActions;
