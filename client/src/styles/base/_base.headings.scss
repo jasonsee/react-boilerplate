@@ -19,40 +19,34 @@ h1,
 .#{$inuit-namespace}alpha,
 %#{$inuit-namespace}alpha {
     @include inuit-font-size($inuit-heading-size-1);
-    font-weight: 600;
 }
 
 h2,
 .#{$inuit-namespace}beta,
 %#{$inuit-namespace}beta {
     @include inuit-font-size($inuit-heading-size-2);
-    font-weight: 600;
 }
 
 h3,
 .#{$inuit-namespace}gamma,
 %#{$inuit-namespace}gamma {
     @include inuit-font-size($inuit-heading-size-3);
-    font-weight: 600;
 }
 
 h4,
 .#{$inuit-namespace}delta,
 %#{$inuit-namespace}delta {
     @include inuit-font-size($inuit-heading-size-4);
-    font-weight: 600;
 }
 
 h5,
 .#{$inuit-namespace}epsilon,
 %#{$inuit-namespace}epsilon {
     @include inuit-font-size($inuit-heading-size-5);
-    font-weight: 600;
 }
 
 h6,
 .#{$inuit-namespace}zeta,
 %#{$inuit-namespace}zeta {
     @include inuit-font-size($inuit-heading-size-6);
-    font-weight: 600;
 }
