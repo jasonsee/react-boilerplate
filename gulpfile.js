@@ -46,7 +46,7 @@ gulp.task('webpack:release', function(callback) {
             vendor: dependencies
         },
         output: {
-            path: __dirname + '/dist/js',
+            path: __dirname + '/dist/public/js',
             filename: 'main.js'
         },
         module: {
@@ -99,17 +99,22 @@ gulp.task('css', function() {
 
 gulp.task('copy-assets-release', function() {
     return gulp.src(paths.assets)
-        .pipe(gulp.dest('dist/assets/'));
+        .pipe(gulp.dest('dist/public/assets/'));
 });
 
 gulp.task('copy-sprites-release', function() {
     return gulp.src(paths.sprites)
-        .pipe(gulp.dest('dist/css'));
+        .pipe(gulp.dest('dist/public/css'));
 });
 
 gulp.task('copy-assets', function() {
     return gulp.src(paths.assets)
         .pipe(gulp.dest('client/public/assets/'));
+});
+
+gulp.task('copy-html-release', function () {
+    return gulp.src('client/index.html')
+        .pipe(gulp.dest('dist/'));
 });
 
 gulp.task('copy-sprites', function() {
@@ -183,7 +188,7 @@ gulp.task('jshint', function() {
 gulp.task('minify', function() {
     return gulp.src('client/public/css/style.css')
         .pipe(minify())
-        .pipe(gulp.dest('dist/css/'));
+        .pipe(gulp.dest('dist/public/css/'));
 });
 
 gulp.task('clean-public', function(callback) {
@@ -210,7 +215,7 @@ gulp.task('release', function(callback) {
     runSequence(
         ['clean-public', 'clean-dist'],
         ['copy-assets'],
-        ['copy-assets-release', 'copy-sprites-release'],
+        ['copy-assets-release', 'copy-sprites-release', 'copy-html-release'],
         ['css', 'jshint'],
         ['minify', 'webpack:release'],
         callback
