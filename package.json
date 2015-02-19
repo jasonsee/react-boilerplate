@@ -17,6 +17,7 @@
   },
   "devDependencies": {
     "argan": "git+ssh://git@github.com:willowtreeapps/argan.git#npm-import",
+    "css-loader": "^0.9.1",
     "del": "~0.1.3",
     "express": "^4.10.2",
     "formidable": "~1.0.15",
@@ -44,6 +45,7 @@
     "request": "~2.48.0",
     "run-sequence": "~1.0.1",
     "sass-loader": "^0.4.0-beta.1",
+    "style-loader": "^0.8.3",
     "vinyl-source-stream": "~1.0.0",
     "webpack": "~1.4.13",
     "webpack-dev-server": "^1.7.0"

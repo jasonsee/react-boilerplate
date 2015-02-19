@@ -138,7 +138,7 @@ var createActions = function (actions, prefix) {
             return [actionKey, action];
         } else if (_.is(Object, action)) {
             if (action.type === undefined) {
-                return [actionKey, createActions(action)]
+                return [actionKey, createActions(action)];
             }
 
             actionHandler = action.action;

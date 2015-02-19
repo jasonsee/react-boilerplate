@@ -14,8 +14,6 @@ var gulp = require('gulp'),
     stylish = require('jshint-stylish');
 
 
-var livereload = require('gulp-livereload');
-
 var env = process.env.NODE_ENV;
 
 var paths = {
@@ -93,8 +91,7 @@ gulp.task('css', function() {
             includePaths: ['client/src/styles/inuit']
         }).on('error', handleErrors))
         .pipe(autoprefixer('last 2 version', 'safari 5', 'ie 8', 'ie 9', 'opera 12.1'))
-        .pipe(gulp.dest('client/public/css'))
-        .pipe(livereload());
+        .pipe(gulp.dest('client/public/css'));
 });
 
 gulp.task('copy-assets-release', function() {

@@ -18,7 +18,10 @@ module.exports = {
     },
     module: {
         loaders: [
-            { test: /\.js$/,  loaders: ['react-hot', "jsx-loader?harmony&stripTypes&es5"] }
+            { test: /\.js$/,  loaders: ['react-hot', "jsx-loader?harmony&stripTypes&es5"] },
+            { test: /\.css$/, loader: "style-loader!css-loader" },
+            { test: /\.png$/, loader: "url-loader?limit=100000&mimetype=image/png" },
+            { test: /\.jpg$/, loader: "file-loader" }
         ]
     },
     resolve: {
