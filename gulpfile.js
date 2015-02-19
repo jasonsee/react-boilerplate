@@ -223,7 +223,8 @@ gulp.task('build', function(callback) {
     runSequence(
         ['clean-public'],
         ['copy-assets', 'copy-sprites'],
-        ['webpack', 'css'],
+        ['css'],
+        ['webpack']
         callback
     );
 });
