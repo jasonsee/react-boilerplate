@@ -179,7 +179,7 @@ var buildRequest = function(options) {
     // Allow all postHooks to tap into the promise before passing it back
     return _.reduce(function(promise, [success, error]) {
         return promise.then(success, error);
-    }, promise, postCallbacks);
+    }, request, postCallbacks);
 };
 
 
