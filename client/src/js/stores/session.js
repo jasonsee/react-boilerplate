@@ -12,19 +12,23 @@ var SessionStore = Tuxxor.createStore({
         this.token = false;
     },
 
-    actions: {
-        login: SessionConstants.LOGIN_SUCCESS,
-        logout: SessionConstants.LOGOUT_SUCCESS
+    promises: {
+        "login": "SESSION_LOGIN",
+        "logout": "SESSION_LOGOUT"
     },
 
-    login: function() {
-        this.authed = true;
-        this.emit('change');
+    login: {
+        success: function () {
+            this.authed = true;
+            this.emit('change');
+        }
     },
 
-    logout: function() {
-        this.authed = false;
-        this.emit('change');
+    logout: {
+        success: function () {
+            this.authed = false;
+            this.emit('change');
+        }
     },
 
     getState: function() {
@@ -33,8 +37,6 @@ var SessionStore = Tuxxor.createStore({
             token: this.token
         });
     }
-
 });
-
 
 module.exports = new SessionStore();

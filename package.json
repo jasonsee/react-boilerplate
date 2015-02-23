@@ -45,6 +45,7 @@
     "request": "~2.48.0",
     "run-sequence": "~1.0.1",
     "sass-loader": "^0.4.0-beta.1",
+    "strip-loader": "^0.1.0",
     "style-loader": "^0.8.3",
     "vinyl-source-stream": "~1.0.0",
     "webpack": "~1.4.13",

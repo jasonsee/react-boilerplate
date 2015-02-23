@@ -224,7 +224,7 @@ gulp.task('build', function(callback) {
         ['clean-public'],
         ['copy-assets', 'copy-sprites'],
         ['css'],
-        ['webpack']
+        ['webpack'],
         callback
     );
 });

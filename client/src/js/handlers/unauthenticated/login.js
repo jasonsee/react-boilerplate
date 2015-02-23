@@ -75,13 +75,13 @@ var LoginView = React.createClass({
                 type="text"
                 ref="username"
                 placeholder="username"
-                onKeyDown={this.setCredentials} />
+                onKeyUp={this.setCredentials} />
 
             <input
                 type="password"
                 ref="password"
                 placeholder="password"
-                onKeyDown={this.setCredentials} />
+                onKeyUp={this.setCredentials} />
 
             <button className="submit" onClick={this.submit}>Submit</button>
             <span className="a forgot-password">Forgot Password?</span>
