@@ -13,7 +13,7 @@
     "ramda": "^0.10.0",
     "react-forms": "prometheusresearch/react-forms",
     "react-router": "~0.11.4",
-    "superagent": "^0.21.0"
+    "reqwest": "^1.1.5"
   },
   "devDependencies": {
     "argan": "git+ssh://git@github.com:willowtreeapps/argan.git#npm-import",

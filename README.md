@@ -40,11 +40,11 @@ Here are some common, custom patterns you can use with the boilerplate.
 No need to worry about Cross domain calls! To fetch outside data...
 
 ```
-var request = require('superagent');
+var ajax = require('ajax');
 
 // For your server...
-request('/api/session/login');
+ajax.get('/api/session/login');
 
 // For monkeypod
-request('/monkeypod/session/login');
+ajax.get('/monkeypod/session/login');
 ```
