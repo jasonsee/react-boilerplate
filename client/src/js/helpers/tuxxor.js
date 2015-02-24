@@ -67,7 +67,6 @@ var applyMixins = function (storeSpec) {
         storeSpec.actions = _.merge(promises, storeSpec.actions);
 
         storeSpec =  flattenHandlers(promises, storeSpec);
-        console.log(storeSpec);
         storeSpec = generateHandlers (promises, storeSpec);
     }
 
