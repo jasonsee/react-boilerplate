@@ -14,6 +14,9 @@ var SessionStore = Tuxxor.createStore({
 
     promises: {
         "login": "SESSION_LOGIN",
+    },
+
+    actions: {
         "logout": "SESSION_LOGOUT"
     },
 
@@ -24,11 +27,9 @@ var SessionStore = Tuxxor.createStore({
         }
     },
 
-    logout: {
-        success: function () {
-            this.authed = false;
-            this.emit('change');
-        }
+    logout: function () {
+        this.authed = false;
+        this.emit('change');
     },
 
     getState: function() {

@@ -1,6 +1,6 @@
 'use strict';
 
-var {promised} = require('helpers/tuxxor');
+var {promised, auto} = require('helpers/tuxxor');
 var SessionAPI = require('apis/session');
 
 var login = function(credentials) {
@@ -13,7 +13,7 @@ var logout = function() {
 
 var SessionActions = {
     login: promised("SESSION_LOGIN", login),
-    logout: promised("SESSION_LOGOUT", logout)
+    logout: auto("SESSION_LOGOUT")
 };
 
 module.exports = SessionActions;

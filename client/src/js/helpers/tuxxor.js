@@ -181,7 +181,7 @@ var createActions = function (actions, prefix) {
                     this.dispatch(dispatchToken + "_COMPLETE");
                 });
             } else {
-                this.dispatch(prefix, result);
+                this.dispatch(dispatchToken, result);
             }
 
             return result;
