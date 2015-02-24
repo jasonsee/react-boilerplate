@@ -66,7 +66,8 @@ var applyMixins = function (storeSpec) {
         var promises = generatePromises(_.toPairs(storeSpec.promises));
         storeSpec.actions = _.merge(promises, storeSpec.actions);
 
-        storeSpec = determineHandlers(promises, storeSpec);
+        storeSpec =  flattenHandlers(promises, storeSpec);
+        console.log(storeSpec);
         storeSpec = generateHandlers (promises, storeSpec);
     }
 
@@ -97,11 +98,11 @@ var extractHandlers = function (promisedObject) {
     return _.mergeAll(newHandlers);
 };
 
-var determineHandlers = function (promises, storeSpec) {
-    var handlers = _.keys(storeSpec.promises);
+var flattenHandlers = function (promises, storeSpec) {
+    var handlers = _.values(storeSpec.promises);
     return _.reduce(function (newSpec, handler) {
-        if (_.is(Object, newSpec[handler])) {
-            var newHandlers = extractHandlers(_.pick([handler], newSpec));
+        if (_.is(Object, storeSpec[handler])) {
+            var newHandlers = extractHandlers(_.pick([handler], storeSpec));
             return _.merge(newHandlers, newSpec);
         }
         return newSpec;
@@ -109,7 +110,7 @@ var determineHandlers = function (promises, storeSpec) {
 };
 
 var generatePromises = _.reduce(function (memo, promisePair) {
-    var [actionHandler, dispatchToken] = promisePair;
+    var [dispatchToken, actionHandler] = promisePair;
     var asyncActions = ["Started", "Success", "Failure", "Complete"];
     var handlers = _.map(function (handlerName) {
         var dispatch = `${dispatchToken}_${handlerName.toUpperCase()}`;
