@@ -1,7 +1,7 @@
 'use strict';
 
 var Promise = require('bluebird');
-var request = require('superagent');
+var ajax = require('ajax');
 var _ = require('ramda');
 
 module.exports = {
@@ -14,6 +14,8 @@ module.exports = {
      */
     login: function(credentials) {
         credentials = _.pick(['username', 'password'], credentials);
+
+        //return ajax.post('/api/authentication/login', credentials);
 
         return new Promise(function(resolve, reject) {
             setTimeout(function() {
