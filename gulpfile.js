@@ -13,6 +13,7 @@ var gulp = require('gulp'),
     runSequence = require('run-sequence'),
     stylish = require('jshint-stylish');
 
+
 var env = process.env.NODE_ENV;
 
 var paths = {
@@ -43,7 +44,7 @@ gulp.task('webpack:release', function(callback) {
             vendor: dependencies
         },
         output: {
-            path: __dirname + '/dist/js',
+            path: __dirname + '/dist/public/js',
             filename: 'main.js'
         },
         module: {
@@ -74,30 +75,7 @@ gulp.task('webpack:release', function(callback) {
 })
 
 gulp.task('webpack', function(callback) {
-    webpack({
-        cache: true,
-        watch: true,
-        watchDelay: 200,
-        entry: {
-            main: './client/src/js/main',
-            vendor: dependencies
-        },
-        output: {
-            path: __dirname + '/client/public/js',
-            filename: 'main.js'
-        },
-        module: {
-            loaders: [
-                { test: /\.js$/,  loader: "jsx-loader?harmony&stripTypes&es5" }
-            ]
-        },
-        resolve: {
-            root: __dirname + '/client/src/js'
-        },
-        plugins: [
-            new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.js')
-        ]
-    }, function(err, stats) {
+    webpack(require('./webpackConfig.js'), function(err, stats) {
         if (err) {
              throw new gutil.PluginError("webpack:build-dev", err);
         }
@@ -110,7 +88,7 @@ gulp.task('css', function() {
     return gulp.src('./client/src/styles/style.scss')
         .pipe(sass({
             imagePath: 'client/public/assets/images',
-            includePaths: ['node_modules/argan/client/src/scss/inuit']
+            includePaths: ['client/src/styles/inuit']
         }).on('error', handleErrors))
         .pipe(autoprefixer('last 2 version', 'safari 5', 'ie 8', 'ie 9', 'opera 12.1'))
         .pipe(gulp.dest('client/public/css'));
@@ -118,17 +96,22 @@ gulp.task('css', function() {
 
 gulp.task('copy-assets-release', function() {
     return gulp.src(paths.assets)
-        .pipe(gulp.dest('dist/assets/'));
+        .pipe(gulp.dest('dist/public/assets/'));
 });
 
 gulp.task('copy-sprites-release', function() {
     return gulp.src(paths.sprites)
-        .pipe(gulp.dest('dist/css'));
+        .pipe(gulp.dest('dist/public/css'));
 });
 
 gulp.task('copy-assets', function() {
     return gulp.src(paths.assets)
         .pipe(gulp.dest('client/public/assets/'));
+});
+
+gulp.task('copy-html-release', function () {
+    return gulp.src('client/index.html')
+        .pipe(gulp.dest('dist/'));
 });
 
 gulp.task('copy-sprites', function() {
@@ -138,7 +121,7 @@ gulp.task('copy-sprites', function() {
 
 gulp.task('nodemon', function() {
     return nodemon({
-        script: 'server/main.js',
+        script: 'proxy.js',
         ext: 'js html',
         ignore: __dirname + '/client/**/*.js',
     });
@@ -151,23 +134,27 @@ gulp.task('jshint', function() {
         .pipe(react()
         .on('error', handleErrors))
         .pipe(jshint({
-            browser: true,
-            devel: false,
-            globalstrict: true,
-            es3: true,
-            esnext: true,
-            globals: {
-                jest: true,
-                it: true,
-                beforeEach: true,
-                expect: true,
-                describe: true,
-                require: true,
-                module: true,
-                Promise: true,
-                React: true
-            }
-        }))
+                    browser: true,
+                    devel: false,
+                    //unused: 'vars',
+                    globalstrict: true,
+                    esnext: true,
+                    newcap: false,
+                    globals: {
+                        jest: true,
+                        it: true,
+                        beforeEach: true,
+                        afterEach: true,
+                        expect: true,
+                        describe: true,
+                        require: true,
+                        module: true,
+                        Promise: true,
+                        React: true,
+                        TestUtils: true,
+                        catch: true
+                    }
+                }))
         .pipe(notify({
             message: function (file) {
                 if (file.jshint.success) {
@@ -198,7 +185,7 @@ gulp.task('jshint', function() {
 gulp.task('minify', function() {
     return gulp.src('client/public/css/style.css')
         .pipe(minify())
-        .pipe(gulp.dest('dist/css/'));
+        .pipe(gulp.dest('dist/public/css/'));
 });
 
 gulp.task('clean-public', function(callback) {
@@ -225,7 +212,7 @@ gulp.task('release', function(callback) {
     runSequence(
         ['clean-public', 'clean-dist'],
         ['copy-assets'],
-        ['copy-assets-release', 'copy-sprites-release'],
+        ['copy-assets-release', 'copy-sprites-release', 'copy-html-release'],
         ['css', 'jshint'],
         ['minify', 'webpack:release'],
         callback
@@ -236,7 +223,8 @@ gulp.task('build', function(callback) {
     runSequence(
         ['clean-public'],
         ['copy-assets', 'copy-sprites'],
-        ['webpack', 'css'],
+        ['css'],
+        ['webpack'],
         callback
     );
 });
