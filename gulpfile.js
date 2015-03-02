@@ -40,8 +40,7 @@ gulp.task('webpack:release', function(callback) {
         cache: false,
         watch: false,
         entry: {
-            main: './client/src/js/main',
-            vendor: dependencies
+            main: './client/src/js/main'
         },
         output: {
             path: __dirname + '/dist/public/js',
@@ -56,7 +55,6 @@ gulp.task('webpack:release', function(callback) {
             root: __dirname + '/client/src/js'
         },
         plugins: [
-            new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.js'),
             new webpack.DefinePlugin({
 			    "process.env": {
 				    // This has effect on the react lib size
@@ -71,7 +69,8 @@ gulp.task('webpack:release', function(callback) {
              throw new gutil.PluginError("webpack:build-dev", err);
         }
 		gutil.log("[webpack:build-dev]", stats.toString({colors: true}));
-    })
+    });
+    callback();
 })
 
 gulp.task('webpack', function(callback) {

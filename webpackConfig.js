@@ -31,13 +31,9 @@ module.exports = {
     plugins: [
         new webpack.HotModuleReplacementPlugin(),
         new webpack.DefinePlugin({
-            'process.env': Object.keys(process.env).reduce(function (o, k) {
-                if (k === 'NODE_ENV') {
-                    o[k] = JSON.stringify(process.env[k]);
-                }
-                return o;
-            }, {})
+            'process.env': {
+                'NODE_ENV': JSON.stringify("development")
+            }
         })
-        //new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.js')
     ]
 };

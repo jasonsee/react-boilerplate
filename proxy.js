@@ -13,7 +13,6 @@ var webpackConfig = require('./webpackConfig');
 var API = config.apiUrl;
 var MONKEYPOD = config.monkeypodUrl;
 
-
 // ******** PROXY ********* //
 
 // request('/api/session/login')
