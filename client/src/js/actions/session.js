@@ -1,6 +1,6 @@
 'use strict';
 
-var {promised, auto} = require('helpers/tuxxor');
+var {promised, auto} = require('tuxxor');
 var SessionAPI = require('apis/session');
 
 var login = function(credentials) {

@@ -7,18 +7,17 @@
  */
 
 var React = require('react');
-var { Flux, FluxMixin, StoreWatchMixin } = require('fluxxor');
-var Tuxxor = require('helpers/tuxxor');
+var { Flux, FluxMixin, StoreWatchMixin } = require('tuxxor');
 
 var stores = {
     SessionStore: require('stores/session'),
     UserStore: require('stores/user')
 };
 
-var actions = Tuxxor.createActions({
+var actions = {
     session: require('actions/session'),
     user: require('actions/user')
-});
+};
 
 module.exports = {
     flux: new Flux(stores, actions),

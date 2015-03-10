@@ -1,7 +1,7 @@
 'use strict';
 
 var _ = require('ramda');
-var Tuxxor = require('helpers/tuxxor');
+var Tuxxor = require('tuxxor');
 
 var SessionConstants = require('constants').ActionTypes.session;
 

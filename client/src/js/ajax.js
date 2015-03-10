@@ -9,10 +9,8 @@ var Routes = constants.Routes || {};
 var preCallbacks = [];
 var postCallbacks = [];
 
-
 // Swallow all uncaught Promises
-Promise.onPossiblyUnhandledRejection(function(e, promise) { });
-
+Promise.onPossiblyUnhandledRejection(function(e, promise) { return [e, promise]; });
 
 /**
  * Simple constructor function that
@@ -21,7 +19,6 @@ Promise.onPossiblyUnhandledRejection(function(e, promise) { });
  * @class RequestManager
  */
 var requestManager = (function() {
-
     var requestHash = {};
 
     /**
@@ -44,7 +41,6 @@ var requestManager = (function() {
     };
 
     return addRequest;
-
 })();
 
 
@@ -55,7 +51,7 @@ var requestManager = (function() {
  * @return {String}
  */
 var serializeQueryParams = function(data) {
-    if (!data) return '';
+    if (!data) { return ''; }
 
     /**
      * Provides a simple check for an empty value and joins
@@ -65,7 +61,7 @@ var serializeQueryParams = function(data) {
      * @return {Array}
      */
     var parameterize = function(pair) {
-        if (_.isEmpty(_.last(pair))) return [];
+        if (_.isEmpty(_.last(pair))) { return []; }
         return [_.join('=', pair)];
     };
 

@@ -9,9 +9,8 @@
   "dependencies": {
     "bluebird": "^2.9.9",
     "compwnents": "~0.0.4",
-    "fluxxor": "^1.5.2",
-    "ramda": "^0.10.0",
-    "react-forms": "prometheusresearch/react-forms",
+    "tuxxor": "willowtreeapps/tuxxor",
+    "ramda": "^0.11.0",
     "react-router": "~0.11.4",
     "reqwest": "^1.1.5"
   },
@@ -39,7 +38,7 @@
     "node-sass": "^2.0.1",
     "optimist": "~0.6.1",
     "react": "~0.12.0",
-    "react-hot-loader": "^1.1.5",
+    "react-hot-loader": "~1.1.5",
     "react-tools": "~0.12.1",
     "reactify": "^0.17.1",
     "request": "~2.48.0",

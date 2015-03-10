@@ -2,7 +2,6 @@
 
 var React = require('react');
 var { RouteHandler } = require('react-router');
-var { FluxMixin, StoreWatchMixin } = require('flux');
 
 var Unauthenticated = React.createClass({
 

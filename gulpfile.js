@@ -14,7 +14,7 @@ var gulp = require('gulp'),
     stylish = require('jshint-stylish');
 
 
-var env = process.env.NODE_ENV;
+var env = process.env.NODE_ENV || 'development';
 
 var paths = {
     styles: ['client/src/styles/**/*.scss'],
@@ -135,7 +135,7 @@ gulp.task('jshint', function() {
         .pipe(jshint({
                     browser: true,
                     devel: false,
-                    //unused: 'vars',
+                    unused: false,
                     globalstrict: true,
                     esnext: true,
                     newcap: false,
@@ -147,6 +147,7 @@ gulp.task('jshint', function() {
                         expect: true,
                         describe: true,
                         require: true,
+                        process: true,
                         module: true,
                         Promise: true,
                         React: true,

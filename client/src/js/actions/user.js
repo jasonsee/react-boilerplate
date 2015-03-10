@@ -1,7 +1,7 @@
 'use strict';
 
 var Promise = require('bluebird');
-var {promised} = require('helpers/tuxxor');
+var {promised} = require('tuxxor');
 var UserAPI = require('apis/user');
 
 

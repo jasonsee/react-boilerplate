@@ -1,6 +1,6 @@
 'use strict';
 
-var { Route, RouteHandler, Link, DefaultRoute, NotFoundRoute } = require('react-router');
+var { Route,Link, DefaultRoute } = require('react-router');
 
 var App = require('handlers/app');
 
