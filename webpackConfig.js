@@ -6,6 +6,7 @@ module.exports = {
     cache: true,
     watch: true,
     watchDelay: 200,
+    devtool: 'source-map',
     entry: [
         'webpack-dev-server/client?http://localhost:'+config.port,
         'webpack/hot/dev-server',
