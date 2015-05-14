@@ -42,7 +42,7 @@ app.all('/monkeypod/*', function(req, res) {
 
 // Set up push state so it will work with webpack
 app.all(pushStatePath, function (req, res) {
-    res.sendfile(staticRoot + '/index.html');
+    res.sendFile(staticRoot + '/index.html');
 });
 
 // Create our webpack server, this will host our static files
@@ -61,4 +61,3 @@ server.listen(config.port, 'localhost', function (err, result) {
     if (err) { return console.log(err); }
     console.log('Listening at localhost:'+config.port);
 });
-
