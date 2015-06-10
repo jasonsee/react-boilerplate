@@ -4,7 +4,7 @@
 
 The react-boilerplate is a collection of configuration files and organization
 conventions designed to ease the process of bootstrapping new javascript heavy
-web applications at WTA. It uses [gulp](http://gulpjs.com/) as a build tool
+web applications. It uses [gulp](http://gulpjs.com/) as a build tool
 and [sass](http://sass-lang.com/) to generate CSS. Both tools require
 some minimal setup.
 
