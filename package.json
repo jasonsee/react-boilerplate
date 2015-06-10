@@ -1,10 +1,10 @@
 {
-  "name": "WAT-React-Boilerplate",
+  "name": "React-Boilerplate",
   "version": "0.0.1",
   "private": true,
   "repository": {
     "type": "git",
-    "url": "https://github.com/willowtreeapps/react-boilerplate"
+    "url": "https://github.com/jasonsee/react-boilerplate"
   },
   "dependencies": {
     "bluebird": "^2.9.9",

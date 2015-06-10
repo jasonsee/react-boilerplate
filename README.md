@@ -1,4 +1,4 @@
-#WAT's react-boilerplate
+#react-boilerplate
 
 ##Overview
 
@@ -25,7 +25,6 @@ some minimal setup.
 5. Configure your application in `config.js`:
 
     - `apiFallback`: This is the url of the API you are pointing to.
-    - `monkeypodFallback`: This is the monkeypod URL you can use internally
     - `portFallback`: This is the port you will access the web server on.
     it defaults to `http://localhost:9000`.
 
@@ -45,6 +44,4 @@ var ajax = require('ajax');
 // For your server...
 ajax.get('/api/session/login');
 
-// For monkeypod
-ajax.get('/monkeypod/session/login');
 ```
